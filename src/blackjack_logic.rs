@@ -1,13 +1,13 @@
 use crate::card::*;
 
-pub fn hand_value(hand: Vec<Card>) -> u32 {
+pub fn hand_value(hand: &Vec<Card>) -> u32 {
     let mut value = 0;
-    let mut num_aces = 0;
+    let mut found_ace = false;
 
     for elem in hand.iter() {
         value += match &elem.rank {
             Rank::Ace => {
-                num_aces += 1;
+                found_ace = true;
                 1
             }
             Rank::Two => 2,
@@ -22,11 +22,11 @@ pub fn hand_value(hand: Vec<Card>) -> u32 {
         }
     }
 
-    for _ in 0..num_aces {
-        if value < 12 {
-            value += 10
-        }
+    
+    if found_ace && value < 12 {
+        value += 10
     }
+    
     value
 }
 
