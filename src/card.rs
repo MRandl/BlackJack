@@ -7,7 +7,7 @@ pub enum Suit {
 }
 
 impl Suit {
-    pub fn from_int(a: u8) -> Suit {
+    pub fn from_int(a: u32) -> Suit {
         match a % 4 {
             0 => Suit::Spades,
             1 => Suit::Hearts,
@@ -35,7 +35,7 @@ pub enum Rank {
 }
 
 impl Rank {
-    pub fn from_int(a: u8) -> Rank {
+    pub fn from_int(a: u32) -> Rank {
         match a % 13 {
             0 => Rank::Two,
             1 => Rank::Three,
@@ -70,13 +70,6 @@ impl Card {
                 })
             })
             .collect()
-    }
-
-    pub fn is_head(&self) -> bool {
-        match self.rank {
-            Rank::Jack | Rank::Queen | Rank::King => true,
-            _ => false,
-        }
     }
 }
 
