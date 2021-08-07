@@ -22,11 +22,10 @@ pub fn hand_value(hand: &Vec<Card>) -> u32 {
         }
     }
 
-    
     if found_ace && value < 12 {
         value += 10
     }
-    
+
     value
 }
 
