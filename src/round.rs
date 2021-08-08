@@ -25,13 +25,31 @@ pub fn init_game(
 }
 
 pub fn play_round(
-    _player_hands: &[Vec<Card>; NUM_PLAYERS],
-    _dealer_hand: &mut Vec<Card>,
-    _pack: &mut Vec<Card>,
-    players: &[&Player; NUM_PLAYERS_AND_DEALER],
+    player_hands: &mut [Vec<Card>; NUM_PLAYERS],
+    dealer_hand: &mut Vec<Card>,
+    pack: &mut Vec<Card>,
+    player_types: &[&Player; NUM_PLAYERS_AND_DEALER],
 ) {
-    for (index, player) in players.iter().enumerate() {
-        
+    for (index, player) in player_types.iter().enumerate() {
+        let mut action = match player {
+            Player::Bot => bot_play(),
+            Player::Human => human_play(),
+        };
+
+        while action != PlayerAction::Stand {
+
+            let new_card = pick_card(pack);
+            if index < NUM_PLAYERS {
+                player_hands[index].push(new_card);
+            } else {
+                dealer_hand.push(new_card);
+            }
+
+            action = match player {
+                Player::Bot => bot_play(),
+                Player::Human => human_play(),
+            };
+        }
     }
 }
 

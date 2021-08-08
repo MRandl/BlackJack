@@ -18,7 +18,7 @@ fn main() {
     print!("\n\n");
 
     let mut multi_card_pack: Vec<Card> = Vec::new();
-    let player_types = [&Player::Bot; NUM_PLAYERS_AND_DEALER];
+    let player_types = [&Player::Human, &Player::Bot, &Player::Bot];
     let mut player_hands = [EMPTY_HAND; NUM_PLAYERS];
     let mut dealer_hand: Vec<Card> = Vec::new();
 
