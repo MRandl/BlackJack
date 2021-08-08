@@ -2,7 +2,7 @@ use crate::card::*;
 use crate::math;
 use crate::player::*;
 
-use math::{NUM_PACKS, NUM_PLAYERS, NUM_PLAYERS_AND_DEALER};
+use math::{compute_scores, NUM_PACKS, NUM_PLAYERS, NUM_PLAYERS_AND_DEALER};
 use rand::seq::SliceRandom;
 use rand::thread_rng;
 
@@ -31,13 +31,14 @@ pub fn play_round(
     player_types: &[&Player; NUM_PLAYERS_AND_DEALER],
 ) {
     for (index, player) in player_types.iter().enumerate() {
+        let mut score = compute_scores(player_hands, dealer_hand);
+
         let mut action = match player {
             Player::Bot => bot_play(),
-            Player::Human => human_play(),
+            Player::Human => human_play(&score, player_hands, dealer_hand, index),
         };
 
         while action != PlayerAction::Stand {
-
             let new_card = pick_card(pack);
             if index < NUM_PLAYERS {
                 player_hands[index].push(new_card);
@@ -45,9 +46,11 @@ pub fn play_round(
                 dealer_hand.push(new_card);
             }
 
+            score = compute_scores(player_hands, dealer_hand);
+
             action = match player {
                 Player::Bot => bot_play(),
-                Player::Human => human_play(),
+                Player::Human => human_play(&score, player_hands, dealer_hand, index),
             };
         }
     }
