@@ -1,7 +1,7 @@
-use crate::bjmath;
+use crate::math;
 use crate::card::*;
 
-use bjmath::{NUM_PACKS, NUM_PLAYERS};
+use math::{NUM_PACKS, NUM_PLAYERS};
 use rand::seq::SliceRandom;
 use rand::thread_rng;
 

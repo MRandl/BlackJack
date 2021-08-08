@@ -1,4 +1,4 @@
-use crate::bjmath::{is_blackjack, NUM_PLAYERS, NUM_PLAYERS_AND_DEALER};
+use crate::math::{is_blackjack, NUM_PLAYERS, NUM_PLAYERS_AND_DEALER};
 use crate::card::Card;
 
 pub fn display_hand_and_scores(

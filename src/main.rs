@@ -1,11 +1,11 @@
 //! A CLI blackjack game.
 
-mod bjmath;
+mod math;
 mod card;
 mod display;
 mod round;
 
-use bjmath::*;
+use math::*;
 use card::*;
 use display::*;
 use round::*;
