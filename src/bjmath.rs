@@ -1,7 +1,7 @@
 use crate::card::*;
 
-pub const NUM_PACKS: u32 = 4;
-pub const NUM_PLAYERS: u32 = 2; //does not include the dealer
+pub const NUM_PACKS: usize = 4;
+pub const NUM_PLAYERS: usize = 2; //does not include the dealer
 
 /// Computes the total value of a playing hand.
 ///
@@ -14,7 +14,7 @@ pub const NUM_PLAYERS: u32 = 2; //does not include the dealer
 ///
 /// For example, hand_value(&vec!(Queen of Hearts, 4 of
 /// spades, Ace of Hearts)) == 15
-pub fn hand_value(hand: &Vec<Card>) -> u32 {
+fn hand_value(hand: &Vec<Card>) -> u32 {
     let mut value = 0;
     let mut found_ace = false;
 
@@ -44,10 +44,37 @@ pub fn hand_value(hand: &Vec<Card>) -> u32 {
 }
 
 pub fn is_blackjack(hand: &Vec<Card>) -> bool {
-    let ranks: Vec<&Rank> = hand.iter().map(|c| &c.rank).collect();
-    ranks.len() == 2
-        && ranks.contains(&&Rank::Ace)
-        && (ranks.contains(&&Rank::Jack)
-            || ranks.contains(&&Rank::Queen)
-            || ranks.contains(&&Rank::King))
+    hand.len() == 2 && hand_value(hand) == 21
+}
+
+pub fn compute_scores(
+    player_hands: &Vec<Vec<Card>>,
+    dealer_hand: &Vec<Card>,
+) -> [u32; (NUM_PLAYERS + 1)] {
+    let mut scores = [0; (NUM_PLAYERS + 1)];
+    let mut player = 0;
+    for hand in player_hands {
+        scores[player] = hand_value(hand);
+        player += 1;
+    }
+    scores[player] = hand_value(dealer_hand);
+    scores
+}
+
+pub fn compute_winner(scores: [u32; (NUM_PLAYERS + 1)]) -> (Vec<usize>, u32) {
+    let mut winner_index: Vec<usize> = Vec::new();
+    let mut winner_score = 0;
+    let mut current_index = 0;
+    
+    for score in scores {
+        if score == winner_score {
+            winner_index.push(current_index);
+        } else if score > winner_score && score <= 21 {
+            winner_score = score;
+            winner_index.clear();
+            winner_index.push(current_index)
+        }
+        current_index += 1;
+    }
+    (winner_index, winner_score)
 }
