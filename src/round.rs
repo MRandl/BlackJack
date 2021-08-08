@@ -1,7 +1,8 @@
-use crate::math;
 use crate::card::*;
+use crate::math;
+use crate::player::*;
 
-use math::{NUM_PACKS, NUM_PLAYERS};
+use math::{NUM_PACKS, NUM_PLAYERS, NUM_PLAYERS_AND_DEALER};
 use rand::seq::SliceRandom;
 use rand::thread_rng;
 
@@ -27,8 +28,11 @@ pub fn play_round(
     _player_hands: &[Vec<Card>; NUM_PLAYERS],
     _dealer_hand: &mut Vec<Card>,
     _pack: &mut Vec<Card>,
+    players: &[&Player; NUM_PLAYERS_AND_DEALER],
 ) {
-    //todo: implement adding cards one by one for each player with a tiny recap every time
+    for (index, player) in players.iter().enumerate() {
+        
+    }
 }
 
 pub fn pick_card(pack: &mut Vec<Card>) -> Card {

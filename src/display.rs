@@ -1,5 +1,5 @@
-use crate::math::{is_blackjack, NUM_PLAYERS, NUM_PLAYERS_AND_DEALER};
 use crate::card::Card;
+use crate::math::{is_blackjack, NUM_PLAYERS, NUM_PLAYERS_AND_DEALER};
 
 pub fn display_hand_and_scores(
     scores: &[u32; NUM_PLAYERS_AND_DEALER],
