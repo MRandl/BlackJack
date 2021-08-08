@@ -1,5 +1,19 @@
 use crate::card::*;
 
+pub const NUM_PACKS: u32 = 4;
+pub const NUM_PLAYERS: u32 = 2; //does not include the dealer
+
+/// Computes the total value of a playing hand.
+///
+/// The result must be less than or equal to 21
+/// to be able to win the round.
+///
+/// Aces are counted as
+/// 11 whenever possible, 1 otherwise.
+/// See <https://en.wikipedia.org/wiki/Blackjack>
+///
+/// For example, hand_value(&vec!(Queen of Hearts, 4 of
+/// spades, Ace of Hearts)) == 15
 pub fn hand_value(hand: &Vec<Card>) -> u32 {
     let mut value = 0;
     let mut found_ace = false;

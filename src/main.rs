@@ -1,59 +1,59 @@
-mod blackjack_logic;
-mod card;
+//! A CLI blackjack game.
 
-use blackjack_logic::*;
+mod bjmath;
+mod card;
+mod round;
+
+use bjmath::*;
 use card::*;
 use rand::seq::SliceRandom;
 use rand::thread_rng;
-
-const NUM_PACKS: u32 = 4;
-const NUM_PLAYERS: u32 = 2; //includes the dealer
+use round::*;
 
 fn main() {
-    let mut mult_card_pack: Vec<Card> = Vec::new();
+    print!("\n\n");
 
+    let mut multi_card_pack: Vec<Card> = Vec::new();
     for _ in 0..NUM_PACKS {
-        mult_card_pack.extend(Card::card_pack());
+        multi_card_pack.extend(Card::card_pack());
     }
-    mult_card_pack.shuffle(&mut thread_rng());
+    multi_card_pack.shuffle(&mut thread_rng());
 
     let mut player_hands: Vec<Vec<Card>> = Vec::new();
-    for _ in 0..NUM_PLAYERS {
-        player_hands.push(Vec::new());
-    }
+    let mut dealer_hand: Vec<Card> = Vec::new();
 
-    for hand in &mut player_hands {
-        hand.push(pick_card(&mut mult_card_pack));
-        hand.push(pick_card(&mut mult_card_pack));
-    }
+    init_game(&mut player_hands, &mut dealer_hand, &mut multi_card_pack);
+    play_round(&mut player_hands, &mut dealer_hand, &mut multi_card_pack);
 
-    let mut player = 1;
-    for hand in &player_hands {
-        let mut stri: String = String::from("{");
-        for elem in hand {
-            stri.push_str(&format!("/ {} /", elem));
+    let scores = compute_scores(&player_hands, &dealer_hand);
+
+    let mut winner_index: Vec<u32> = Vec::new();
+    let mut winner_score = 0;
+
+    let mut current_index = 0;
+    for score in scores {
+        if score == winner_score {
+            winner_index.push(current_index);
+        } else if score > winner_score && score <= 21 {
+            winner_score = score;
+            winner_index.clear();
+            winner_index.push(current_index)
         }
-        stri.push('}');
+        current_index += 1;
+    }
+    if winner_index.len() == 1 {
         println!(
-            "Player {} got hand {} with value {}!",
-            player,
-            stri,
-            hand_value(hand)
-        );
-        player += 1;
-    }
-}
-
-pub fn pick_card(pack: &mut Vec<Card>) -> Card {
-    match pack.pop() {
-        Some(card) => card,
-        None => {
-            //reshuffle
-            for _ in 0..NUM_PACKS {
-                pack.extend(Card::card_pack());
-            }
-            pack.shuffle(&mut thread_rng());
-            pack.pop().unwrap()
+            "\nPlayer {} wins with score {}!",
+            winner_index.pop().unwrap() + 1,
+            winner_score
+        )
+    } else {
+        let mut stri = String::new();
+        for elem in winner_index {
+            stri.push_str(&format!("{}, ", elem + 1))
         }
+        stri.pop();
+        stri.pop();
+        println!("Equality between the players : {}!", stri)
     }
 }
