@@ -6,7 +6,7 @@ use rand::seq::SliceRandom;
 use rand::thread_rng;
 
 pub fn init_game(
-    player_hands: &mut Vec<Vec<Card>>,
+    player_hands: &mut [Vec<Card>; NUM_PLAYERS],
     dealer_hand: &mut Vec<Card>,
     pack: &mut Vec<Card>,
 ) {
@@ -14,10 +14,6 @@ pub fn init_game(
         pack.extend(Card::card_pack());
     }
     pack.shuffle(&mut thread_rng());
-    
-    for _ in 0..NUM_PLAYERS {
-        player_hands.push(Vec::new());
-    }
 
     for hand in player_hands {
         hand.push(pick_card(pack));
@@ -28,7 +24,7 @@ pub fn init_game(
 }
 
 pub fn play_round(
-    _player_hands: &mut Vec<Vec<Card>>,
+    _player_hands: &[Vec<Card>; NUM_PLAYERS],
     _dealer_hand: &mut Vec<Card>,
     _pack: &mut Vec<Card>,
 ) {

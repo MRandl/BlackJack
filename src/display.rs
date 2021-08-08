@@ -1,9 +1,9 @@
-use crate::bjmath::{NUM_PLAYERS, is_blackjack};
+use crate::bjmath::{is_blackjack, NUM_PLAYERS, NUM_PLAYERS_AND_DEALER};
 use crate::card::Card;
 
 pub fn display_hand_and_scores(
-    scores: &[u32; (NUM_PLAYERS + 1)],
-    player_hands: &Vec<Vec<Card>>,
+    scores: &[u32; NUM_PLAYERS_AND_DEALER],
+    player_hands: &[Vec<Card>; NUM_PLAYERS],
     dealer_hand: &Vec<Card>,
 ) {
     let mut current_index: usize = 0;
@@ -18,8 +18,12 @@ pub fn display_hand_and_scores(
             "Player {} got hand {} with value {}! {}",
             current_index + 1,
             stri,
-            score, 
-            if is_blackjack(player_hand) {"Blackjack!"} else {""}
+            score,
+            if is_blackjack(player_hand) {
+                "Blackjack!"
+            } else {
+                ""
+            }
         );
         current_index += 1;
     }
@@ -35,20 +39,20 @@ pub fn display_hand_and_scores(
     );
 }
 
-pub fn display_winner(mut winner_index : Vec<usize>, winner_score : u32) {
-  if winner_index.len() == 1 {
-    println!(
-        "\nPlayer {} wins with score {}!",
-        winner_index.pop().unwrap() + 1,
-        winner_score
-    )
-} else {
-    let mut stri = String::new();
-    for elem in winner_index {
-        stri.push_str(&format!("{}, ", elem + 1))
+pub fn display_winner(mut winner_index: Vec<usize>, winner_score: u32) {
+    if winner_index.len() == 1 {
+        println!(
+            "\nPlayer {} wins with score {}!",
+            winner_index.pop().unwrap() + 1,
+            winner_score
+        )
+    } else {
+        let mut stri = String::new();
+        for elem in winner_index {
+            stri.push_str(&format!("{}, ", elem + 1))
+        }
+        stri.pop();
+        stri.pop();
+        println!("Equality between the players : {}!", stri)
     }
-    stri.pop();
-    stri.pop();
-    println!("Equality between the players : {}!", stri)
-}
 }

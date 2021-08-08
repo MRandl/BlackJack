@@ -1,7 +1,8 @@
 use crate::card::*;
 
 pub const NUM_PACKS: usize = 4;
-pub const NUM_PLAYERS: usize = 2; //does not include the dealer
+pub const NUM_PLAYERS: usize = 2;
+pub const NUM_PLAYERS_AND_DEALER: usize = NUM_PLAYERS + 1;
 
 /// Computes the total value of a playing hand.
 ///
@@ -47,11 +48,16 @@ pub fn is_blackjack(hand: &Vec<Card>) -> bool {
     hand.len() == 2 && hand_value(hand) == 21
 }
 
+/// Computes the scores of all players, including the dealer,
+/// according to [hand_value].
+///
+/// This method returns an array of scores as u32 values. The
+/// dealer score is the last.
 pub fn compute_scores(
-    player_hands: &Vec<Vec<Card>>,
+    player_hands: &[Vec<Card>; NUM_PLAYERS],
     dealer_hand: &Vec<Card>,
-) -> [u32; (NUM_PLAYERS + 1)] {
-    let mut scores = [0; (NUM_PLAYERS + 1)];
+) -> [u32; NUM_PLAYERS_AND_DEALER] {
+    let mut scores = [0; NUM_PLAYERS_AND_DEALER];
     let mut player = 0;
     for hand in player_hands {
         scores[player] = hand_value(hand);
@@ -61,11 +67,11 @@ pub fn compute_scores(
     scores
 }
 
-pub fn compute_winner(scores: [u32; (NUM_PLAYERS + 1)]) -> (Vec<usize>, u32) {
+pub fn compute_winner(scores: [u32; NUM_PLAYERS_AND_DEALER]) -> (Vec<usize>, u32) {
     let mut winner_index: Vec<usize> = Vec::new();
     let mut winner_score = 0;
     let mut current_index = 0;
-    
+
     for score in scores {
         if score == winner_score {
             winner_index.push(current_index);
