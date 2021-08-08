@@ -41,9 +41,10 @@ pub fn display_hand_and_scores(
 
 pub fn display_winner(mut winner_index: Vec<usize>, winner_score: u32) {
     if winner_index.len() == 1 {
+        let index_of_winner = winner_index.pop().unwrap();
         println!(
-            "\nPlayer {} wins with score {}!",
-            winner_index.pop().unwrap() + 1,
+            "\n{} wins with score {}!",
+            player_name(index_of_winner),
             winner_score
         )
     } else {
@@ -54,5 +55,13 @@ pub fn display_winner(mut winner_index: Vec<usize>, winner_score: u32) {
         stri.pop();
         stri.pop();
         println!("Equality between the players : {}!", stri)
+    }
+}
+
+fn player_name(index : usize) -> String {
+    if index < NUM_PLAYERS {
+        format!("Player {}", index + 1)
+    } else {
+        String::from("Dealer")
     }
 }

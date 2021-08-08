@@ -34,7 +34,7 @@ pub fn play_round(
         let mut score = compute_scores(player_hands, dealer_hand);
 
         let mut action = match player {
-            Player::Bot => bot_play(),
+            Player::Bot => bot_play(&score, player_hands, dealer_hand, index),
             Player::Human => human_play(&score, player_hands, dealer_hand, index),
         };
 
@@ -49,7 +49,7 @@ pub fn play_round(
             score = compute_scores(player_hands, dealer_hand);
 
             action = match player {
-                Player::Bot => bot_play(),
+                Player::Bot => bot_play(&score, player_hands, dealer_hand, index),
                 Player::Human => human_play(&score, player_hands, dealer_hand, index),
             };
         }

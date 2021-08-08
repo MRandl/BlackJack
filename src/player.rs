@@ -46,6 +46,15 @@ pub fn human_play(
     }
 }
 
-pub fn bot_play() -> PlayerAction {
-    PlayerAction::Stand
+pub fn bot_play(
+    scores: &[u32; NUM_PLAYERS_AND_DEALER],
+    _player_hands: &[Vec<Card>; NUM_PLAYERS],
+    _dealer_hand: &Vec<Card>,
+    index: usize,
+) -> PlayerAction {
+    if scores[index] < 15 {
+        PlayerAction::Hit
+    } else {
+        PlayerAction::Stand
+    }
 }
