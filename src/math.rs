@@ -62,16 +62,14 @@ pub fn is_splittable(hand: &Vec<Card>) -> bool {
 /// This method returns an array of scores as u32 values. The
 /// dealer score is the last.
 pub fn compute_scores(
-    player_hands: &[Vec<Card>; NUM_PLAYERS],
+    player_hands: &Vec<Vec<Card>>,
     dealer_hand: &Vec<Card>,
 ) -> [u32; NUM_PLAYERS_AND_DEALER] {
     let mut scores = [0; NUM_PLAYERS_AND_DEALER];
-    let mut player = 0;
-    for hand in player_hands {
-        scores[player] = hand_value(hand);
-        player += 1;
+    for (index, hand) in player_hands.iter().enumerate() {
+        scores[index] = hand_value(hand);
     }
-    scores[player] = hand_value(dealer_hand);
+    scores[NUM_PLAYERS] = hand_value(dealer_hand);
     scores
 }
 

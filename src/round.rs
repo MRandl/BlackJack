@@ -7,7 +7,7 @@ use rand::seq::SliceRandom;
 use rand::thread_rng;
 
 pub fn init_game(
-    player_hands: &mut [Vec<Card>; NUM_PLAYERS],
+    player_hands: &mut Vec<Vec<Card>>,
     dealer_hand: &mut Vec<Card>,
     pack: &mut Vec<Card>,
 ) {
@@ -15,6 +15,10 @@ pub fn init_game(
         pack.extend(Card::card_pack());
     }
     pack.shuffle(&mut thread_rng());
+
+    for _ in 0..NUM_PLAYERS {
+        player_hands.push(Vec::new())
+    }
 
     for hand in player_hands {
         hand.push(pick_card(pack));
@@ -25,10 +29,10 @@ pub fn init_game(
 }
 
 pub fn play_round(
-    player_hands: &mut [Vec<Card>; NUM_PLAYERS],
+    player_hands: &mut Vec<Vec<Card>>,
     dealer_hand: &mut Vec<Card>,
     pack: &mut Vec<Card>,
-    player_types: &[Player; NUM_PLAYERS_AND_DEALER],
+    player_types: &Vec<Player>,
 ) {
     for (index, player_type) in player_types.iter().enumerate() {
         let mut score = compute_scores(player_hands, dealer_hand);
@@ -66,7 +70,7 @@ pub fn pick_card(pack: &mut Vec<Card>) -> Card {
 
 fn pick_action(
     scores: &[u32; NUM_PLAYERS_AND_DEALER],
-    player_hands: &[Vec<Card>; NUM_PLAYERS],
+    player_hands: &Vec<Vec<Card>>,
     dealer_hand: &Vec<Card>,
     index: usize,
     player_type: &Player,

@@ -3,7 +3,7 @@ use crate::math::{is_blackjack, NUM_PLAYERS, NUM_PLAYERS_AND_DEALER};
 
 pub fn display_hand_and_scores(
     scores: &[u32; NUM_PLAYERS_AND_DEALER],
-    player_hands: &[Vec<Card>; NUM_PLAYERS],
+    player_hands: &Vec<Vec<Card>>,
     dealer_hand: &Vec<Card>,
 ) {
     for (index, score) in scores.into_iter().enumerate() {

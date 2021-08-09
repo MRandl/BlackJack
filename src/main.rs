@@ -12,14 +12,12 @@ use math::*;
 use player::*;
 use round::*;
 
-const EMPTY_HAND: Vec<Card> = Vec::new();
-
 fn main() {
     print!("\n\n");
 
     let mut multi_card_pack: Vec<Card> = Vec::new();
-    let player_types = [Player::Human, Player::Bot, Player::Bot];
-    let mut player_hands = [EMPTY_HAND; NUM_PLAYERS];
+    let player_types = vec![Player::Human, Player::Bot, Player::Bot];
+    let mut player_hands: Vec<Vec<Card>> = Vec::new();
     let mut dealer_hand: Vec<Card> = Vec::new();
 
     init_game(&mut player_hands, &mut dealer_hand, &mut multi_card_pack);

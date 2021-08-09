@@ -18,7 +18,7 @@ pub enum PlayerAction {
 
 pub fn human_play(
     scores: &[u32; NUM_PLAYERS_AND_DEALER],
-    player_hands: &[Vec<Card>; NUM_PLAYERS],
+    player_hands: &Vec<Vec<Card>>,
     dealer_hand: &Vec<Card>,
     index: usize,
 ) -> PlayerAction {
@@ -50,7 +50,7 @@ pub fn human_play(
 
 pub fn bot_play(
     scores: &[u32; NUM_PLAYERS_AND_DEALER],
-    _player_hands: &[Vec<Card>; NUM_PLAYERS],
+    _player_hands: &Vec<Vec<Card>>,
     _dealer_hand: &Vec<Card>,
     index: usize,
 ) -> PlayerAction {
