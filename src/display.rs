@@ -7,7 +7,6 @@ pub fn display_hand_and_scores(
     dealer_hand: &Vec<Card>,
 ) {
     for (index, score) in scores.into_iter().enumerate() {
-
         let player_hand = if index < NUM_PLAYERS {
             player_hands.get(index).unwrap()
         } else {
@@ -52,7 +51,7 @@ pub fn display_winner(mut winner_index: Vec<usize>, winner_score: u32) {
     }
 }
 
-fn player_name(index : usize) -> String {
+fn player_name(index: usize) -> String {
     if index < NUM_PLAYERS {
         format!("Player {}", index + 1)
     } else {
