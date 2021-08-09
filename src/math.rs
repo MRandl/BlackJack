@@ -70,9 +70,8 @@ pub fn compute_scores(
 pub fn compute_winner(scores: [u32; NUM_PLAYERS_AND_DEALER]) -> (Vec<usize>, u32) {
     let mut winner_index: Vec<usize> = Vec::new();
     let mut winner_score = 0;
-    let mut current_index = 0;
 
-    for score in scores {
+    for (current_index, &score) in scores.iter().enumerate() {
         if score == winner_score {
             winner_index.push(current_index);
         } else if score > winner_score && score <= 21 {
@@ -80,7 +79,6 @@ pub fn compute_winner(scores: [u32; NUM_PLAYERS_AND_DEALER]) -> (Vec<usize>, u32
             winner_index.clear();
             winner_index.push(current_index)
         }
-        current_index += 1;
     }
     (winner_index, winner_score)
 }

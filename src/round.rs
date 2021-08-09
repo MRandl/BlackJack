@@ -30,10 +30,10 @@ pub fn play_round(
     pack: &mut Vec<Card>,
     player_types: &[&Player; NUM_PLAYERS_AND_DEALER],
 ) {
-    for (index, player) in player_types.iter().enumerate() {
+    for (index, player_type) in player_types.iter().enumerate() {
         let mut score = compute_scores(player_hands, dealer_hand);
 
-        let mut action = match player {
+        let mut action = match player_type {
             Player::Bot => bot_play(&score, player_hands, dealer_hand, index),
             Player::Human => human_play(&score, player_hands, dealer_hand, index),
         };
@@ -48,7 +48,7 @@ pub fn play_round(
 
             score = compute_scores(player_hands, dealer_hand);
 
-            action = match player {
+            action = match player_type {
                 Player::Bot => bot_play(&score, player_hands, dealer_hand, index),
                 Player::Human => human_play(&score, player_hands, dealer_hand, index),
             };

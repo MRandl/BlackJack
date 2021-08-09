@@ -1,9 +1,22 @@
-#[derive(Debug, PartialEq)]
+use std::fmt::Display;
+
+#[derive(PartialEq)]
 pub enum Suit {
     Spades,
     Hearts,
     Diamonds,
     Clubs,
+}
+
+impl Display for Suit {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result { 
+        write!(f, "{}", match self {
+            Suit::Spades => "♠",
+            Suit::Hearts => "♥",
+            Suit::Diamonds => "♦",
+            Suit::Clubs => "♣",
+        })    
+    }
 }
 
 impl Suit {
@@ -17,7 +30,7 @@ impl Suit {
     }
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(PartialEq)]
 pub enum Rank {
     Two,
     Three,
@@ -32,6 +45,27 @@ pub enum Rank {
     Queen,
     King,
     Ace,
+}
+
+impl Display for Rank {
+    
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result { 
+        write!(f, "{}", match self {
+            Rank::Two => "2",
+            Rank::Three => "3",
+            Rank::Four => "4",
+            Rank::Five => "5",
+            Rank::Six => "6",
+            Rank::Seven => "7",
+            Rank::Eight => "8",
+            Rank::Nine => "9",
+            Rank::Ten => "10",
+            Rank::Jack => "J",
+            Rank::Queen => "Q",
+            Rank::King => "K",
+            Rank::Ace => "A",
+        })
+    }
 }
 
 impl Rank {
@@ -75,6 +109,6 @@ impl Card {
 
 impl std::fmt::Display for Card {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{:?} of {:?}", self.rank, self.suit)
+        write!(f, "{}{}", self.rank, self.suit)
     }
 }
