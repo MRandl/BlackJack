@@ -33,10 +33,15 @@ pub fn play_round(
     for (index, player_type) in player_types.iter().enumerate() {
         let mut score = compute_scores(player_hands, dealer_hand);
 
-        let mut action = match player_type {
-            Player::Bot => bot_play(&score, player_hands, dealer_hand, index),
-            Player::Human => human_play(&score, player_hands, dealer_hand, index),
+        let mut action = if score[index] >= 21 {
+            PlayerAction::Stand
+        } else {
+            match player_type {
+                Player::Bot => bot_play(&score, player_hands, dealer_hand, index),
+                Player::Human => human_play(&score, player_hands, dealer_hand, index),
+            }
         };
+        
 
         while action != PlayerAction::Stand {
             let new_card = pick_card(pack);
@@ -48,9 +53,13 @@ pub fn play_round(
 
             score = compute_scores(player_hands, dealer_hand);
 
-            action = match player_type {
-                Player::Bot => bot_play(&score, player_hands, dealer_hand, index),
-                Player::Human => human_play(&score, player_hands, dealer_hand, index),
+            action = if score[index] >= 21 {
+                PlayerAction::Stand
+            } else {
+                match player_type {
+                    Player::Bot => bot_play(&score, player_hands, dealer_hand, index),
+                    Player::Human => human_play(&score, player_hands, dealer_hand, index),
+                }
             };
         }
     }
