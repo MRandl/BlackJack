@@ -13,6 +13,7 @@ pub enum PlayerAction {
     Hit,
     Stand,
     //Double,
+    Split,
 }
 
 pub fn human_play(
@@ -41,6 +42,7 @@ pub fn human_play(
         let _ = match s.as_str() {
             "Hit" => return PlayerAction::Hit,
             "Stand" => return PlayerAction::Stand,
+            "Split" => return PlayerAction::Split,
             _ => println!("Unrecognized move. Please input again:"),
         };
     }

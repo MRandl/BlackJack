@@ -48,6 +48,14 @@ pub fn is_blackjack(hand: &Vec<Card>) -> bool {
     hand.len() == 2 && hand_value(hand) == 21
 }
 
+pub fn is_splittable(hand: &Vec<Card>) -> bool {
+    hand.len() == 2 && {
+        let hand_0 = hand.get(0).unwrap();
+        let hand_1 = hand.get(1).unwrap();
+        hand_0 == hand_1
+    }
+}
+
 /// Computes the scores of all players, including the dealer,
 /// according to [hand_value].
 ///
