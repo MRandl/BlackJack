@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 use crate::card::Card;
 use crate::display::display_hand_and_scores;
-use crate::math::{NUM_PLAYERS, NUM_PLAYERS_AND_DEALER};
+use crate::math::{NUM_PLAYERS_AND_DEALER};
 use std::io::stdin;
 pub enum Player {
     Bot,
@@ -17,9 +17,10 @@ pub enum PlayerAction {
 }
 
 pub fn human_play(
-    scores: &[u32; NUM_PLAYERS_AND_DEALER],
-    player_hands: &Vec<Vec<Card>>,
+    scores: &[(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
+    player_hands: &mut Vec<(Vec<Card>, Option<Vec<Card>>)>,
     dealer_hand: &Vec<Card>,
+    is_second:bool,
     index: usize,
 ) -> PlayerAction {
     println!("------------------------");
@@ -49,12 +50,14 @@ pub fn human_play(
 }
 
 pub fn bot_play(
-    scores: &[u32; NUM_PLAYERS_AND_DEALER],
-    _player_hands: &Vec<Vec<Card>>,
+    scores: &[(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
+    _player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
     _dealer_hand: &Vec<Card>,
+    is_second : bool,
     index: usize,
 ) -> PlayerAction {
-    if scores[index] < 15 {
+    
+    if (!is_second && scores[index].0 < 15) || (is_second && scores[index].1.unwrap() < 15) {
         PlayerAction::Hit
     } else {
         PlayerAction::Stand
