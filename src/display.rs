@@ -7,15 +7,18 @@ pub fn display_hand_and_scores(
     dealer_hand: &Vec<Card>,
 ) {
     for (index, score) in scores.into_iter().enumerate() {
-        let player_hand : (&Vec<Card>, Option<&Vec<Card>>) = if index < NUM_PLAYERS {
+        let player_hand: (&Vec<Card>, Option<&Vec<Card>>) = if index < NUM_PLAYERS {
             let tup = player_hands.get(index).unwrap();
             (&tup.0, tup.1.as_ref())
         } else {
             (dealer_hand, None)
         };
 
-        
-        let vec = if player_hand.1.is_none() {vec!(player_hand.0)} else {vec!(player_hand.0, player_hand.1.unwrap())};
+        let vec = if player_hand.1.is_none() {
+            vec![player_hand.0]
+        } else {
+            vec![player_hand.0, player_hand.1.unwrap()]
+        };
         for (index_of_split, elem) in vec.iter().enumerate() {
             let mut stri = String::from("{");
             for card in *elem {
@@ -26,7 +29,11 @@ pub fn display_hand_and_scores(
                 "{} got hand {} with value {}!{}",
                 player_name(index),
                 stri,
-                if index_of_split == 0 {score.0} else {score.1.unwrap()},
+                if index_of_split == 0 {
+                    score.0
+                } else {
+                    score.1.unwrap()
+                },
                 if is_blackjack(elem) {
                     " Blackjack!"
                 } else {
@@ -34,7 +41,6 @@ pub fn display_hand_and_scores(
                 }
             );
         }
-        
     }
 }
 

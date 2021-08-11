@@ -47,21 +47,22 @@ pub fn play_round(
                     } else {
                         dealer_hand.push(new_card);
                     }
-        
+
                     score = compute_scores(player_hands, dealer_hand);
-        
-                    action = pick_action(&score, player_hands, dealer_hand, index, false, player_type);
+
+                    action =
+                        pick_action(&score, player_hands, dealer_hand, index, false, player_type);
                 }
                 PlayerAction::Split => {
                     let hand = player_hands.get_mut(index).unwrap();
                     let card = hand.0.pop().unwrap();
-                    hand.1 = Some(vec!(card));
+                    hand.1 = Some(vec![card]);
                     score = compute_scores(player_hands, dealer_hand);
-                    action = pick_action(&score, player_hands, dealer_hand, index, false, player_type);
+                    action =
+                        pick_action(&score, player_hands, dealer_hand, index, false, player_type);
                 }
-                PlayerAction::Stand => unreachable!()
+                PlayerAction::Stand => unreachable!(),
             }
-            
         }
     }
 }
@@ -88,7 +89,6 @@ fn pick_action(
     is_second: bool,
     player_type: &Player,
 ) -> PlayerAction {
-    
     if (!is_second && scores[index].0 >= 21) || (is_second && scores[index].1.unwrap_or(22) >= 21) {
         PlayerAction::Stand
     } else {
@@ -101,8 +101,10 @@ fn pick_action(
             match action {
                 //make sure splitting is legal, the rest always is
                 PlayerAction::Split => {
-                    let hand = if is_second {&player_hands[index].1.as_ref().unwrap()} else {&player_hands[index].0};
-                    if index < NUM_PLAYERS && is_splittable(hand) {
+                    if player_hands[index].1.is_none()
+                        && index < NUM_PLAYERS
+                        && is_splittable(&player_hands[index].0)
+                    {
                         return action;
                     } else {
                         ()
