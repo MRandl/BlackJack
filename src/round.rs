@@ -35,75 +35,11 @@ pub fn play_round(
     player_types: &Vec<Player>,
 ) {
     for (index, player_type) in player_types.iter().enumerate() {
-        let mut score = compute_scores(player_hands, dealer_hand);
-        let mut action = pick_action(&score, player_hands, dealer_hand, index, false, player_type);
-
-        while action != PlayerAction::Stand {
-            match action {
-                PlayerAction::Hit => {
-                    let new_card = pick_card(pack);
-                    if index < player_hands.len() {
-                        player_hands[index].0.push(new_card);
-                    } else {
-                        dealer_hand.push(new_card);
-                    }
-
-                    score = compute_scores(player_hands, dealer_hand);
-
-                    action =
-                        pick_action(&score, player_hands, dealer_hand, index, false, player_type);
-                }
-                PlayerAction::Split => {
-                    let hand = player_hands.get_mut(index).unwrap();
-                    let card = hand.0.pop().unwrap();
-                    hand.1 = Some(vec![card]);
-
-                    score = compute_scores(player_hands, dealer_hand);
-                    action =
-                        pick_action(&score, player_hands, dealer_hand, index, false, player_type);
-                }
-                PlayerAction::Stand => unreachable!(),
-            }
-        }
+        
+        play_turn(player_hands, dealer_hand, pack, index, player_type, false);
 
         if index < NUM_PLAYERS && player_hands[index].1.is_some() {
-            let mut score = compute_scores(player_hands, dealer_hand);
-            let mut action =
-                pick_action(&score, player_hands, dealer_hand, index, true, player_type);
-
-            while action != PlayerAction::Stand {
-                match action {
-                    PlayerAction::Hit => {
-                        let new_card = pick_card(pack);
-                        if index < player_hands.len() {
-                            player_hands[index].1.as_mut().unwrap().push(new_card);
-                        }
-
-                        score = compute_scores(player_hands, dealer_hand);
-
-                        action = pick_action(
-                            &score,
-                            player_hands,
-                            dealer_hand,
-                            index,
-                            false,
-                            player_type,
-                        );
-                    }
-                    PlayerAction::Split => {
-                        score = compute_scores(player_hands, dealer_hand);
-                        action = pick_action(
-                            &score,
-                            player_hands,
-                            dealer_hand,
-                            index,
-                            false,
-                            player_type,
-                        );
-                    }
-                    PlayerAction::Stand => unreachable!(),
-                }
-            }
+            play_turn(player_hands, dealer_hand, pack, index, player_type, true)
         }
     }
 }
@@ -130,7 +66,7 @@ fn pick_action(
     is_second: bool,
     player_type: &Player,
 ) -> PlayerAction {
-    if (!is_second && scores[index].0 >= 21) || (is_second && scores[index].1.unwrap_or(22) >= 21) {
+    if (!is_second && scores[index].0 >= 21) || (is_second && scores[index].1.unwrap() >= 21) {
         PlayerAction::Stand
     } else {
         loop {
@@ -153,6 +89,49 @@ fn pick_action(
                 }
                 _ => return action,
             }
+        }
+    }
+}
+
+fn play_turn(
+    player_hands: &mut Vec<(Vec<Card>, Option<Vec<Card>>)>,
+    dealer_hand: &mut Vec<Card>,
+    pack: &mut Vec<Card>,
+    index : usize,
+    player_type: &Player,
+    is_second_turn: bool
+) {
+    let mut score = compute_scores(player_hands, dealer_hand);
+    let mut action = pick_action(&score, player_hands, dealer_hand, index, is_second_turn, player_type);
+    while action != PlayerAction::Stand {
+        match action {
+            PlayerAction::Hit => {
+                let new_card = pick_card(pack);
+                if index < player_hands.len() {
+                    {if is_second_turn {
+                        player_hands[index].1.as_mut().unwrap()
+                    } else {
+                        &mut player_hands[index].0
+                    }}.push(new_card);
+                } else {
+                    dealer_hand.push(new_card);
+                }
+
+                score = compute_scores(player_hands, dealer_hand);
+
+                action =
+                    pick_action(&score, player_hands, dealer_hand, index, is_second_turn, player_type);
+            }
+            PlayerAction::Split => {
+                let hand = player_hands.get_mut(index).unwrap();
+                let card = hand.0.pop().unwrap();
+                hand.1 = Some(vec![card]);
+
+                score = compute_scores(player_hands, dealer_hand);
+                action =
+                    pick_action(&score, player_hands, dealer_hand, index, false, player_type);
+            }
+            PlayerAction::Stand => unreachable!(),
         }
     }
 }
