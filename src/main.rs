@@ -5,12 +5,14 @@ mod display;
 mod math;
 mod player;
 mod round;
+mod utils;
 
 use card::*;
 use display::*;
 use math::*;
 use player::*;
 use round::*;
+use utils::*;
 
 fn main() {
     print!("\n\n");
