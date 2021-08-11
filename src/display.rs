@@ -45,23 +45,39 @@ pub fn display_hand_and_scores(
     }
 }
 
-pub fn display_winner(mut winner_index: Vec<usize>, winner_score: u32) {
-    if winner_index.len() == 1 {
-        let index_of_winner = winner_index.pop().unwrap();
-        println!(
-            "\n{} wins with score {}!",
-            player_name(index_of_winner),
-            winner_score
-        )
-    } else {
-        let mut stri = String::new();
-        for elem in winner_index {
-            stri.push_str(&format!("{}, ", elem + 1))
+pub fn display_winner(winner_index: &Vec<(usize, bool)>, equal_index: &Vec<(usize, bool)>, loser_index: &Vec<(usize, bool)>) {
+    println!("The winners are : ");
+    let mut stri = String::new();
+    for (usi, bol) in winner_index {
+        if !bol {
+            stri.push_str(&format!("{}, ", usi));
+        } else {
+            stri.push_str(&format!("{} - 2, ", usi));
         }
-        stri.pop();
-        stri.pop();
-        println!("Equality between the players : {}!", stri)
     }
+    println!("{}\n", stri);
+
+    println!("The equalities are : ");
+    let mut stri = String::new();
+    for (usi, bol) in equal_index {
+        if !bol {
+            stri.push_str(&format!("{}, ", usi));
+        } else {
+            stri.push_str(&format!("{} - 2, ", usi));
+        }
+    }
+    println!("{}\n", stri);
+
+    println!("The losers are : ");
+    let mut stri = String::new();
+    for (usi, bol) in loser_index {
+        if !bol {
+            stri.push_str(&format!("{}, ", usi));
+        } else {
+            stri.push_str(&format!("{} - 2, ", usi));
+        }
+    }
+    println!("{}\n", stri);
 }
 
 fn player_name(index: usize) -> String {

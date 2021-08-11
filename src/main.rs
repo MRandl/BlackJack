@@ -32,6 +32,6 @@ fn main() {
     display_hand_and_scores(&scores, &player_hands, &dealer_hand);
 
     println!("");
-    let (winner_index, winner_score) = compute_winner(scores); //todo remove when implementing bets
-    display_winner(winner_index, winner_score);
+    let (winner_index, equal_index, loser_index) = compute_winner(scores); //todo remove when implementing bets
+    display_winner(&winner_index, &equal_index, &loser_index);
 }
