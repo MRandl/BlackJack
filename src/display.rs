@@ -14,9 +14,10 @@ pub fn display_hand_and_scores(
             (dealer_hand, None)
         };
 
-        let mut stri = String::from("{");
+        
         let vec = if player_hand.1.is_none() {vec!(player_hand.0)} else {vec!(player_hand.0, player_hand.1.unwrap())};
         for (index_of_split, elem) in vec.iter().enumerate() {
+            let mut stri = String::from("{");
             for card in *elem {
                 stri.push_str(&format!("/ {} /", card));
             }

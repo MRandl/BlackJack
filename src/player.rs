@@ -24,7 +24,7 @@ pub fn human_play(
     index: usize,
 ) -> PlayerAction {
     println!("------------------------");
-    println!("You are player {}.", index + 1);
+    println!("You are player {}{}.", index + 1, if is_second {", second hand"} else {""});
     println!("The board is currently in the following state : \n");
     display_hand_and_scores(scores, player_hands, dealer_hand);
     println!("\nPlease enter your move : Hit or Stand");

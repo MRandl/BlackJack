@@ -52,7 +52,7 @@ pub fn is_splittable(hand: &Vec<Card>) -> bool {
     hand.len() == 2 && {
         let hand_0 = hand.get(0).unwrap();
         let hand_1 = hand.get(1).unwrap();
-        hand_0 == hand_1
+        hand_0.rank == hand_1.rank
     }
 }
 

@@ -36,20 +36,32 @@ pub fn play_round(
 ) {
     for (index, player_type) in player_types.iter().enumerate() {
         let mut score = compute_scores(player_hands, dealer_hand);
-
         let mut action = pick_action(&score, player_hands, dealer_hand, index, false, player_type);
 
         while action != PlayerAction::Stand {
-            let new_card = pick_card(pack);
-            if index < player_hands.len() {
-                player_hands[index].0.push(new_card);
-            } else {
-                dealer_hand.push(new_card);
+            match action {
+                PlayerAction::Hit => {
+                    let new_card = pick_card(pack);
+                    if index < player_hands.len() {
+                        player_hands[index].0.push(new_card);
+                    } else {
+                        dealer_hand.push(new_card);
+                    }
+        
+                    score = compute_scores(player_hands, dealer_hand);
+        
+                    action = pick_action(&score, player_hands, dealer_hand, index, false, player_type);
+                }
+                PlayerAction::Split => {
+                    let hand = player_hands.get_mut(index).unwrap();
+                    let card = hand.0.pop().unwrap();
+                    hand.1 = Some(vec!(card));
+                    score = compute_scores(player_hands, dealer_hand);
+                    action = pick_action(&score, player_hands, dealer_hand, index, false, player_type);
+                }
+                PlayerAction::Stand => unreachable!()
             }
-
-            score = compute_scores(player_hands, dealer_hand);
-
-            action = pick_action(&score, player_hands, dealer_hand, index, false, player_type);
+            
         }
     }
 }
