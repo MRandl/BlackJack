@@ -2,41 +2,47 @@ use crate::card::Card;
 use crate::math::{is_blackjack, NUM_PLAYERS, NUM_PLAYERS_AND_DEALER};
 
 pub fn display_hand_and_scores(
-    scores: &[u32; NUM_PLAYERS_AND_DEALER],
-    player_hands: &[Vec<Card>; NUM_PLAYERS],
+    scores: &[(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
+    player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
     dealer_hand: &Vec<Card>,
 ) {
-    let mut current_index: usize = 0;
-    for score in scores[0..(NUM_PLAYERS)].into_iter() {
-        let player_hand = player_hands.get(current_index).unwrap();
-        let mut stri = String::from("{");
-        for card in player_hand {
-            stri.push_str(&format!("/ {} /", card));
-        }
-        stri.push('}');
-        println!(
-            "Player {} got hand {} with value {}! {}",
-            current_index + 1,
-            stri,
-            score,
-            if is_blackjack(player_hand) {
-                "Blackjack!"
-            } else {
-                ""
-            }
-        );
-        current_index += 1;
-    }
+    for (index, score) in scores.into_iter().enumerate() {
+        let player_hand: (&Vec<Card>, Option<&Vec<Card>>) = if index < NUM_PLAYERS {
+            let tup = player_hands.get(index).unwrap();
+            (&tup.0, tup.1.as_ref())
+        } else {
+            (dealer_hand, None)
+        };
 
-    let mut stri = String::from("{");
-    for card in dealer_hand {
-        stri.push_str(&format!("/ {} /", card));
+        let vec = if player_hand.1.is_none() {
+            vec![player_hand.0]
+        } else {
+            vec![player_hand.0, player_hand.1.unwrap()]
+        };
+        for (index_of_split, elem) in vec.iter().enumerate() {
+            let mut stri = String::from("{");
+            for card in *elem {
+                stri.push_str(&format!("/ {} /", card));
+            }
+            stri.push('}');
+            println!(
+                "{} got hand {} with value {}!{}",
+                player_name(index),
+                stri,
+                if index_of_split == 0 {
+                    //if we are not in the split hand
+                    score.0
+                } else {
+                    score.1.unwrap()
+                },
+                if is_blackjack(elem) {
+                    " Blackjack!"
+                } else {
+                    ""
+                }
+            );
+        }
     }
-    stri.push('}');
-    println!(
-        "Dealer got hand {} with value {}!",
-        stri, scores[NUM_PLAYERS]
-    );
 }
 
 pub fn display_winner(mut winner_index: Vec<usize>, winner_score: u32) {
@@ -58,7 +64,7 @@ pub fn display_winner(mut winner_index: Vec<usize>, winner_score: u32) {
     }
 }
 
-fn player_name(index : usize) -> String {
+fn player_name(index: usize) -> String {
     if index < NUM_PLAYERS {
         format!("Player {}", index + 1)
     } else {
