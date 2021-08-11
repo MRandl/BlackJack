@@ -18,41 +18,6 @@ pub fn play_round(
     }
 }
 
-fn pick_action(
-    scores: &[(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
-    player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
-    dealer_hand: &Vec<Card>,
-    index: usize,
-    is_second: bool,
-    player_type: &Player,
-) -> PlayerAction {
-    if (!is_second && scores[index].0 >= 21) || (is_second && scores[index].1.unwrap() >= 21) {
-        PlayerAction::Stand
-    } else {
-        loop {
-            // while action is illegal, try again
-            let action = match player_type {
-                Player::Bot => bot_play(scores, player_hands, dealer_hand, is_second, index),
-                Player::Human => human_play(scores, player_hands, dealer_hand, is_second, index),
-            };
-            match action {
-                //make sure splitting is legal, the rest always is
-                PlayerAction::Split => {
-                    if player_hands[index].1.is_none()
-                        && index < NUM_PLAYERS
-                        && is_splittable(&player_hands[index].0)
-                    {
-                        return action;
-                    } else {
-                        ()
-                    }
-                }
-                _ => return action,
-            }
-        }
-    }
-}
-
 fn play_turn(
     player_hands: &mut Vec<(Vec<Card>, Option<Vec<Card>>)>,
     dealer_hand: &mut Vec<Card>,
@@ -110,3 +75,40 @@ fn play_turn(
         }
     }
 }
+
+
+fn pick_action(
+    scores: &[(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
+    player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
+    dealer_hand: &Vec<Card>,
+    index: usize,
+    is_second: bool,
+    player_type: &Player,
+) -> PlayerAction {
+    if (!is_second && scores[index].0 >= 21) || (is_second && scores[index].1.unwrap() >= 21) {
+        PlayerAction::Stand
+    } else {
+        loop {
+            // while action is illegal, try again
+            let action = match player_type {
+                Player::Bot => bot_play(scores, player_hands, dealer_hand, is_second, index),
+                Player::Human => human_play(scores, player_hands, dealer_hand, is_second, index),
+            };
+            match action {
+                //make sure splitting is legal, the rest always is
+                PlayerAction::Split => {
+                    if player_hands[index].1.is_none()
+                        && index < NUM_PLAYERS
+                        && is_splittable(&player_hands[index].0)
+                    {
+                        return action;
+                    } else {
+                        ()
+                    }
+                }
+                _ => return action,
+            }
+        }
+    }
+}
+
