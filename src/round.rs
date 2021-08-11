@@ -35,9 +35,10 @@ pub fn play_round(
     player_types: &Vec<Player>,
 ) {
     for (index, player_type) in player_types.iter().enumerate() {
+
         let mut score = compute_scores(player_hands, dealer_hand);
         let mut action = pick_action(&score, player_hands, dealer_hand, index, false, player_type);
-
+        
         while action != PlayerAction::Stand {
             match action {
                 PlayerAction::Hit => {
@@ -57,11 +58,40 @@ pub fn play_round(
                     let hand = player_hands.get_mut(index).unwrap();
                     let card = hand.0.pop().unwrap();
                     hand.1 = Some(vec![card]);
+
                     score = compute_scores(player_hands, dealer_hand);
                     action =
                         pick_action(&score, player_hands, dealer_hand, index, false, player_type);
                 }
                 PlayerAction::Stand => unreachable!(),
+            }
+        }
+
+        if index < NUM_PLAYERS && player_hands[index].1.is_some() {
+            let mut score = compute_scores(player_hands, dealer_hand);
+            let mut action = pick_action(&score, player_hands, dealer_hand, index, true, player_type);
+            
+            while action != PlayerAction::Stand {
+                match action {
+                    PlayerAction::Hit => {
+                        let new_card = pick_card(pack);
+                        if index < player_hands.len() {
+                            player_hands[index].1.as_mut().unwrap().push(new_card);
+                        }
+
+                        score = compute_scores(player_hands, dealer_hand);
+
+                        action =
+                            pick_action(&score, player_hands, dealer_hand, index, false, player_type);
+                    }
+                    PlayerAction::Split => {
+
+                        score = compute_scores(player_hands, dealer_hand);
+                        action =
+                            pick_action(&score, player_hands, dealer_hand, index, false, player_type);
+                    }
+                    PlayerAction::Stand => unreachable!(),
+                }
             }
         }
     }
