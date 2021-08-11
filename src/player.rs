@@ -1,8 +1,8 @@
-#![allow(dead_code)]
 use crate::card::Card;
 use crate::display::display_hand_and_scores;
 use crate::math::NUM_PLAYERS_AND_DEALER;
 use std::io::stdin;
+
 pub enum Player {
     Bot,
     Human,
@@ -18,7 +18,7 @@ pub enum PlayerAction {
 
 pub fn human_play(
     scores: &[(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
-    player_hands: &mut Vec<(Vec<Card>, Option<Vec<Card>>)>,
+    player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
     dealer_hand: &Vec<Card>,
     is_second: bool,
     index: usize,
@@ -31,7 +31,7 @@ pub fn human_play(
     );
     println!("The board is currently in the following state : \n");
     display_hand_and_scores(scores, player_hands, dealer_hand);
-    println!("\nPlease enter your move : Hit or Stand");
+    println!("\nPlease enter your move : Hit, Stand or Split.");
     loop {
         let mut s = String::new();
         stdin()

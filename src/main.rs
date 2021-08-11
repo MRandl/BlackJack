@@ -15,7 +15,7 @@ use round::*;
 fn main() {
     print!("\n\n");
 
-    let mut multi_card_pack: Vec<Card> = Vec::new();
+    let mut multi_card_pack: Vec<Card> = Vec::new(); //will be filled with a few card packs
     let player_types = vec![Player::Human, Player::Bot, Player::Bot];
     let mut player_hands: Vec<(Vec<Card>, Option<Vec<Card>>)> = Vec::new();
     let mut dealer_hand: Vec<Card> = Vec::new();
@@ -32,6 +32,6 @@ fn main() {
     display_hand_and_scores(&scores, &player_hands, &dealer_hand);
 
     println!("");
-    let (winner_index, winner_score) = compute_winner(scores);
+    let (winner_index, winner_score) = compute_winner(scores); //todo remove when implementing bets
     display_winner(winner_index, winner_score);
 }

@@ -30,6 +30,7 @@ pub fn display_hand_and_scores(
                 player_name(index),
                 stri,
                 if index_of_split == 0 {
+                    //if we are not in the split hand
                     score.0
                 } else {
                     score.1.unwrap()
