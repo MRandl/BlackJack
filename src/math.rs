@@ -73,7 +73,7 @@ pub fn compute_scores(
     scores
 }
 
-pub fn compute_winner(
+pub fn compute_result(
     scores: [(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
 ) -> (Vec<(usize, bool)>, Vec<(usize, bool)>, Vec<(usize, bool)>) {
     let mut winner_index: Vec<(usize, bool)> = Vec::new();
@@ -84,18 +84,18 @@ pub fn compute_winner(
 
     for (current_index, &score) in scores.iter().enumerate() {
         if current_index != NUM_PLAYERS {
-            if score.0 > dealer_score {
+            if score.0 <= 21 && (score.0 > dealer_score || dealer_score > 21) {
                 winner_index.push((current_index, false));
-            } else if score.0 == dealer_score {
+            } else if score.0 == dealer_score || (dealer_score > 21 && score.0 > 21) {
                 equal_index.push((current_index, false));
             } else {
                 loser_index.push((current_index, false));
             }
 
             if let Some(value) = score.1 {
-                if value > dealer_score {
+                if value <= 21 && (value > dealer_score || dealer_score > 21) {
                     winner_index.push((current_index, true));
-                } else if value == dealer_score {
+                } else if value == dealer_score || (dealer_score > 21 && value > 21) {
                     equal_index.push((current_index, true));
                 } else {
                     loser_index.push((current_index, true));
