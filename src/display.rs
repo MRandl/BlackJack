@@ -63,9 +63,9 @@ fn display_result_vector(index: &Vec<(usize, bool)>, name: &str) {
         let mut stri = String::new();
         for (usi, bol) in index {
             if !bol {
-                stri.push_str(&format!("{}, ", usi + 1));
+                stri.push_str(&format!("Player {}, ", usi + 1));
             } else {
-                stri.push_str(&format!("Second {}, ", usi + 1));
+                stri.push_str(&format!("Second player {}, ", usi + 1));
             }
         }
         stri.pop();
