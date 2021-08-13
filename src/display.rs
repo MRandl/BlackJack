@@ -1,6 +1,25 @@
 use crate::card::Card;
 use crate::math::{is_blackjack, NUM_PLAYERS, NUM_PLAYERS_AND_DEALER};
 
+/// This method displays the hands and scores
+/// of all players in a human-readable format.
+///
+/// # Arguments
+///
+/// * `scores` An array of scores obtained by
+/// the players and the dealer. All players must
+/// have at least one score, in the first part of
+/// their corresponding tuples. Players may also
+/// have another hand in case they "split", which
+/// is why another optional score is available. As
+/// the dealer cannot split, their optional hand is
+/// assumed to be None.
+/// * `player_hands` A vector of player hands, each
+/// composed of either one or two Vectors of [Card]s,
+/// the second one being present in case of a split.
+/// This argument must have a length equal to the number
+/// of non-dealer players.
+/// * `dealer_hand` The hand of the dealer.
 pub fn display_hands_and_scores(
     scores: &[(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
     player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
@@ -45,6 +64,23 @@ pub fn display_hands_and_scores(
     }
 }
 
+/// This method displays the results of
+/// the current round in a human-readable format.
+///
+/// # Arguments
+/// * `winner_index` A vector containing the index
+/// of the players whose hand beat the hand of the
+/// dealer. Along with that index is a boolean that is
+/// true if and only if this hand
+/// is a second hand for their respective player.
+/// Note that a player index may appear twice if a player
+/// split and both of their hands beat the dealer.
+/// * `equal_index` Same as winner_index,
+/// but for hands that have the same value as the
+/// hand of the dealer, instead of winning.
+/// * `loser_index` Same as winner_index,
+/// but for hands that have less value as the
+/// hand of the dealer, instead of winning.
 pub fn display_results(
     winner_index: &Vec<(usize, bool)>,
     equal_index: &Vec<(usize, bool)>,
@@ -55,6 +91,8 @@ pub fn display_results(
     display_result_vector(&loser_index, "losers");
 }
 
+/// Internally used by [display_results]. Displays a
+/// vector to the user.
 fn display_result_vector(index: &Vec<(usize, bool)>, name: &str) {
     if index.len() == 0 {
         println!("There are no {} this turn!\n", name);
@@ -74,6 +112,12 @@ fn display_result_vector(index: &Vec<(usize, bool)>, name: &str) {
     }
 }
 
+/// This function computes the name of a player
+/// based on their index.
+///
+/// Indices from 0 to the number
+/// of non-dealer players are mapped to the String
+/// `Player $i` and the other numbers map to "Dealer".
 fn player_name(index: usize) -> String {
     if index < NUM_PLAYERS {
         format!("Player {}", index + 1)
@@ -82,6 +126,8 @@ fn player_name(index: usize) -> String {
     }
 }
 
+/// This method displays the current state of
+/// the bank of the players (not including current bets) to the user.
 pub fn display_bank(bank: &Vec<u32>) {
     let mut stri = String::from("Bank is : ");
     for elem in bank {
