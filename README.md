@@ -9,7 +9,7 @@ Your architecture must be supported by the Rust compiler, and must have access t
 
 ## How to build
 
-This project requires cargo. To build an executable, clone this repository and run `cargo build --release`. To build and run the executable, use `cargo run --release`.
+This project requires cargo. To build an executable, clone this repository and run `cargo build --release`. To build and run the executable, use `cargo run --release`. Note that if the `rand` library is not in your cargo cache, cargo will need an Internet connection to download it.
 
 ## License
 
