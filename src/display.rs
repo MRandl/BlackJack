@@ -76,10 +76,10 @@ pub fn display_hands_and_scores(
 /// Note that a player index may appear twice if a player
 /// split and both of their hands beat the dealer.
 /// * `equal_index` Same as winner_index,
-/// but for hands that have the same value as the 
+/// but for hands that have the same value as the
 /// hand of the dealer, instead of winning.
 /// * `loser_index` Same as winner_index,
-/// but for hands that have less value as the 
+/// but for hands that have less value as the
 /// hand of the dealer, instead of winning.
 pub fn display_results(
     winner_index: &Vec<(usize, bool)>,
@@ -114,7 +114,7 @@ fn display_result_vector(index: &Vec<(usize, bool)>, name: &str) {
 
 /// This function computes the name of a player
 /// based on their index.
-/// 
+///
 /// Indices from 0 to the number
 /// of non-dealer players are mapped to the String
 /// `Player $i` and the other numbers map to "Dealer".

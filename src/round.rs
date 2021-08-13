@@ -3,7 +3,6 @@ use crate::math::*;
 use crate::player::{bot_play, human_bet, human_play, Player, PlayerAction};
 use crate::utils::pick_card;
 
-
 /// Plays a full round by dealing the cards and
 /// calling [play_turn] for each of the players.
 pub fn play_round(
@@ -57,7 +56,7 @@ pub fn play_round(
         }
     }
 }
-/// Asks one players to play their turn,
+/// Asks one player to play their turn,
 /// using repeated calls to the helper function [pick_action]
 /// until the action is Stand.
 fn play_turn(
@@ -134,10 +133,9 @@ fn play_turn(
     }
 }
 
-
 /// Asks a player to give an action to follow until the action
 /// in question is legal, and returns it.
-/// 
+///
 /// Automatically Stands when the hand has more than 21 points.
 fn pick_action(
     scores: &[(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
@@ -177,13 +175,14 @@ fn pick_action(
     }
 }
 
-/// Asks for a betting amount from the player.
-/// 
+/// Asks for a betting amount from the player. Used
+/// at the beginning of the round.
+///
 /// Bots always bet half of their bank reserve.
 /// Humans may pick a bet of their choosing.
 /// This method does not check whether the player
 /// has enough resources to make such a bet, this is done
-/// at a higher-level. 
+/// at a higher-level.
 fn pick_bet(index: usize, player_type: &Player, available: u32) -> u32 {
     match player_type {
         Player::Bot => available >> 1,

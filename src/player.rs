@@ -3,7 +3,7 @@ use crate::display::display_hands_and_scores;
 use crate::math::NUM_PLAYERS_AND_DEALER;
 use std::io::stdin;
 
-/// The enum for the player types. 
+/// The enum for the player types.
 /// A player can be human or a bot.
 pub enum Player {
     Bot,
@@ -20,7 +20,7 @@ pub enum PlayerAction {
     Split,
 }
 
-/// This method asks the player at a given index for 
+/// This method asks the player at a given index for
 /// his bet at this round, by reading his answer in the terminal.
 pub fn human_bet(index: usize, available: u32) -> u32 {
     println!("------------------------");

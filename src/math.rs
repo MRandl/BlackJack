@@ -57,8 +57,8 @@ pub fn is_blackjack(hand: &Vec<Card>) -> bool {
 
 /// This method returns true whenever its argument
 /// is a hand that can be legally split.
-/// 
-/// This occurs when the player has not hit yet, 
+///
+/// This occurs when the player has not hit yet,
 /// and both his cards have the same rank.
 pub fn is_splittable(hand: &Vec<Card>) -> bool {
     hand.len() == 2 && {
@@ -87,11 +87,11 @@ pub fn compute_scores(
 
 /// This method computes which player beat the dealer,
 /// reached equality, or lost, based on an array of scores.
-/// 
-/// This outputs three Vectors of (usize, bool). 
-/// The first Vector corresponds to hands that won against 
-/// the dealer. The second correspond to equalities, and the 
-/// third to losses. The tuples correspond to the index of 
+///
+/// This outputs three Vectors of (usize, bool).
+/// The first Vector corresponds to hands that won against
+/// the dealer. The second correspond to equalities, and the
+/// third to losses. The tuples correspond to the index of
 /// the player, and a boolean equal to true if and only if
 /// the hand is the second of the player, in case of a split.
 /// Typically, the boolean is false.
