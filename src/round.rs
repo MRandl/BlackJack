@@ -13,9 +13,9 @@ pub fn play_round(
 ) {
     for (index, typ) in player_types.iter().enumerate() {
         if index < NUM_PLAYERS {
-            let mut try_bet = pick_bet(index, typ);
+            let mut try_bet = pick_bet(index, typ, bank[index]);
             while try_bet > bank[index] {
-                try_bet = pick_bet(index, typ);
+                try_bet = pick_bet(index, typ, bank[index]);
             }
             bets.push(try_bet);
             bank[index] -= try_bet;
@@ -167,6 +167,9 @@ fn pick_action(
     }
 }
 
-fn pick_bet(_index: usize, _player_type: &Player) -> u32 {
-    300
+fn pick_bet(index: usize, player_type: &Player, available : u32) -> u32 {
+    match player_type {
+        Player::Bot => available >> 1,
+        Player::Human => human_bet(index, available)
+    }
 }

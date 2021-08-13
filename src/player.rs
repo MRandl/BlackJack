@@ -16,6 +16,32 @@ pub enum PlayerAction {
     Split,
 }
 
+pub fn human_bet(index : usize, available : u32) -> u32 {
+    println!("------------------------");
+    println!(
+        "You are player {}.",
+        index + 1 
+    );
+    println!("You have {} units of money available.", available);
+    println!("\nPlease enter your bet amount : ");
+    loop {
+        let mut s = String::new();
+        stdin()
+            .read_line(&mut s)
+            .expect("Did not enter a correct string");
+        if s.ends_with('\n') {
+            s.pop();
+        }
+        if s.ends_with('\r') {
+            s.pop();
+        }
+
+        match s.parse::<u32>(){
+            Ok(va) => return va,
+            Err(_) => ()
+        }
+    }
+}
 pub fn human_play(
     scores: &[(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
     player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,

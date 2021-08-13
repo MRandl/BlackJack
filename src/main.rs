@@ -39,7 +39,7 @@ fn main() {
     display_hand_and_scores(&scores, &player_hands, &dealer_hand);
 
     println!("");
-    let (winner_index, equal_index, loser_index) = compute_result(scores); //todo remove when implementing bets
+    let (winner_index, equal_index, loser_index) = compute_result(scores);
     update_bank(&winner_index, &equal_index, &mut bank, &bets);
 
     display_results(&winner_index, &equal_index, &loser_index);
