@@ -23,6 +23,7 @@ pub enum PlayerAction {
 /// This method asks the player at a given index for
 /// his bet at this round, by reading his answer in the terminal.
 pub fn human_bet(index: usize, available: u32) -> u32 {
+    return 0;
     println!("------------------------");
     println!("You are player {}.", index + 1);
     println!("You have {} units of money available.", available);

@@ -52,5 +52,7 @@ fn main() {
         }
         dealer_hand.clear();
         bets.clear();
+        println!("");
+        wait_for_enter();
     }
 }

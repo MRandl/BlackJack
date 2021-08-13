@@ -137,3 +137,9 @@ pub fn display_bank(bank: &Vec<u32>) {
     stri.pop();
     println!("{}", stri);
 }
+
+/// Blocks until the user presses enter
+pub fn wait_for_enter() {
+    println!("Please press ENTER to continue.");
+    let _ = std::io::stdin().read_line(&mut String::new());
+}
