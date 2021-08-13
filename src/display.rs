@@ -81,3 +81,13 @@ fn player_name(index: usize) -> String {
         String::from("Dealer")
     }
 }
+
+pub fn display_bank(bank: &Vec<u32>) {
+    let mut stri = String::from("Bank is : ");
+    for elem in bank {
+        stri.push_str(&format!("{}, ", elem));
+    }
+    stri.pop();
+    stri.pop();
+    println!("{}", stri);
+}
