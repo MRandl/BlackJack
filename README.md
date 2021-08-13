@@ -17,4 +17,4 @@ This project is licensed under the MIT license. See the [license](LICENSE.md) fo
 
 #
 
-Software written by Mathis Randl ([@MRandl](github.com/MRandl))
+Software written by Mathis Randl ([@MRandl](www.github.com/MRandl))
