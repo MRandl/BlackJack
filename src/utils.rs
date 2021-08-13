@@ -4,6 +4,8 @@ use crate::Card;
 use rand::seq::SliceRandom;
 use rand::thread_rng;
 
+/// Initializes the card deck to a few card packs, shuffles it
+/// and gives a starting fund to the bank of each player.
 pub fn init_game(
     player_hands: &mut Vec<(Vec<Card>, Option<Vec<Card>>)>,
     pack: &mut Vec<Card>,
@@ -20,6 +22,9 @@ pub fn init_game(
     }
 }
 
+/// Picks a card from the deck. If the deck is empty,
+/// replaces it with a fresh shuffled deck and picks a card
+/// from it.
 pub fn pick_card(pack: &mut Vec<Card>) -> Card {
     match pack.pop() {
         Some(card) => card,
@@ -34,6 +39,8 @@ pub fn pick_card(pack: &mut Vec<Card>) -> Card {
     }
 }
 
+/// Adds rewards to the bank of players
+/// that won or reached equality, according to their bets.
 pub fn update_bank(
     win: &Vec<(usize, bool)>,
     equ: &Vec<(usize, bool)>,
@@ -48,6 +55,7 @@ pub fn update_bank(
     }
 }
 
+/// Checks whether all players have some funds to keep playing.
 pub fn is_playable(bank: &Vec<u32>) -> bool {
     for &b in bank {
         if b == 0 {
