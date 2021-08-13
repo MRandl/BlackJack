@@ -5,7 +5,7 @@ It has minimal dependencies (apart from the Rust standard library, it only uses 
 
 ## Supported Architectures
 
-Your architecture must be supported by the Rust compiler, and must have access to the `std` crate.
+Your architecture must be supported by the Rust compiler, and must have access to the standard `std` crate.
 
 ## How to build
 
@@ -14,3 +14,7 @@ This project requires cargo. To build an executable, clone this repository and r
 ## License
 
 This project is licensed under the MIT license. See the [license](LICENSE.md) for more details.
+
+#
+
+Software written by Mathis Randl (@MRandl)
