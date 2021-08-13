@@ -1,7 +1,7 @@
 use crate::card::Card;
 use crate::math::{is_blackjack, NUM_PLAYERS, NUM_PLAYERS_AND_DEALER};
 
-pub fn display_hand_and_scores(
+pub fn display_hands_and_scores(
     scores: &[(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
     player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
     dealer_hand: &Vec<Card>,
@@ -45,22 +45,32 @@ pub fn display_hand_and_scores(
     }
 }
 
-pub fn display_winner(mut winner_index: Vec<usize>, winner_score: u32) {
-    if winner_index.len() == 1 {
-        let index_of_winner = winner_index.pop().unwrap();
-        println!(
-            "\n{} wins with score {}!",
-            player_name(index_of_winner),
-            winner_score
-        )
+pub fn display_results(
+    winner_index: &Vec<(usize, bool)>,
+    equal_index: &Vec<(usize, bool)>,
+    loser_index: &Vec<(usize, bool)>,
+) {
+    display_result_vector(&winner_index, "winners");
+    display_result_vector(&equal_index, "equalities");
+    display_result_vector(&loser_index, "losers");
+}
+
+fn display_result_vector(index: &Vec<(usize, bool)>, name: &str) {
+    if index.len() == 0 {
+        println!("There are no {} this turn!\n", name);
     } else {
+        println!("The {} are : ", name);
         let mut stri = String::new();
-        for elem in winner_index {
-            stri.push_str(&format!("{}, ", elem + 1))
+        for (usi, bol) in index {
+            if !bol {
+                stri.push_str(&format!("Player {}, ", usi + 1));
+            } else {
+                stri.push_str(&format!("Second player {}, ", usi + 1));
+            }
         }
         stri.pop();
         stri.pop();
-        println!("Equality between the players : {}!", stri)
+        println!("{}\n", stri);
     }
 }
 
@@ -70,4 +80,14 @@ fn player_name(index: usize) -> String {
     } else {
         String::from("Dealer")
     }
+}
+
+pub fn display_bank(bank: &Vec<u32>) {
+    let mut stri = String::from("Bank is : ");
+    for elem in bank {
+        stri.push_str(&format!("{}, ", elem));
+    }
+    stri.pop();
+    stri.pop();
+    println!("{}", stri);
 }

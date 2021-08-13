@@ -73,19 +73,35 @@ pub fn compute_scores(
     scores
 }
 
-//todo delete
-pub fn compute_winner(scores: [(u32, Option<u32>); NUM_PLAYERS_AND_DEALER]) -> (Vec<usize>, u32) {
-    let mut winner_index: Vec<usize> = Vec::new();
-    let mut winner_score = 0;
+pub fn compute_result(
+    scores: [(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
+) -> (Vec<(usize, bool)>, Vec<(usize, bool)>, Vec<(usize, bool)>) {
+    let mut winner_index: Vec<(usize, bool)> = Vec::new();
+    let mut equal_index: Vec<(usize, bool)> = Vec::new();
+    let mut loser_index: Vec<(usize, bool)> = Vec::new();
+
+    let dealer_score = scores[NUM_PLAYERS].0;
 
     for (current_index, &score) in scores.iter().enumerate() {
-        if score.0 == winner_score {
-            winner_index.push(current_index);
-        } else if score.0 > winner_score && score.0 <= 21 {
-            winner_score = score.0;
-            winner_index.clear();
-            winner_index.push(current_index)
+        if current_index != NUM_PLAYERS {
+            if score.0 <= 21 && (score.0 > dealer_score || dealer_score > 21) {
+                winner_index.push((current_index, false));
+            } else if score.0 == dealer_score || (dealer_score > 21 && score.0 > 21) {
+                equal_index.push((current_index, false));
+            } else {
+                loser_index.push((current_index, false));
+            }
+
+            if let Some(value) = score.1 {
+                if value <= 21 && (value > dealer_score || dealer_score > 21) {
+                    winner_index.push((current_index, true));
+                } else if value == dealer_score || (dealer_score > 21 && value > 21) {
+                    equal_index.push((current_index, true));
+                } else {
+                    loser_index.push((current_index, true));
+                }
+            }
         }
     }
-    (winner_index, winner_score)
+    (winner_index, equal_index, loser_index)
 }
