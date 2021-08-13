@@ -47,3 +47,12 @@ pub fn update_bank(
         bank[index] += bets[index];
     }
 }
+
+pub fn is_playable(bank : &Vec<u32>) -> bool {
+    for &b in bank {
+        if b == 0 {
+            return false
+        }
+    }
+    true
+}

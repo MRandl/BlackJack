@@ -1,6 +1,6 @@
-use crate::card::*;
+use crate::card::Card;
 use crate::math::*;
-use crate::player::*;
+use crate::player::{bot_play, human_bet, human_play, Player, PlayerAction};
 use crate::utils::pick_card;
 
 pub fn play_round(
@@ -167,9 +167,9 @@ fn pick_action(
     }
 }
 
-fn pick_bet(index: usize, player_type: &Player, available : u32) -> u32 {
+fn pick_bet(index: usize, player_type: &Player, available: u32) -> u32 {
     match player_type {
         Player::Bot => available >> 1,
-        Player::Human => human_bet(index, available)
+        Player::Human => human_bet(index, available),
     }
 }

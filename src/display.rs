@@ -1,7 +1,7 @@
 use crate::card::Card;
 use crate::math::{is_blackjack, NUM_PLAYERS, NUM_PLAYERS_AND_DEALER};
 
-pub fn display_hand_and_scores(
+pub fn display_hands_and_scores(
     scores: &[(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
     player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
     dealer_hand: &Vec<Card>,

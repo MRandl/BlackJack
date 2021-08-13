@@ -1,5 +1,5 @@
 use crate::card::Card;
-use crate::display::display_hand_and_scores;
+use crate::display::display_hands_and_scores;
 use crate::math::NUM_PLAYERS_AND_DEALER;
 use std::io::stdin;
 
@@ -16,12 +16,9 @@ pub enum PlayerAction {
     Split,
 }
 
-pub fn human_bet(index : usize, available : u32) -> u32 {
+pub fn human_bet(index: usize, available: u32) -> u32 {
     println!("------------------------");
-    println!(
-        "You are player {}.",
-        index + 1 
-    );
+    println!("You are player {}.", index + 1);
     println!("You have {} units of money available.", available);
     println!("\nPlease enter your bet amount : ");
     loop {
@@ -36,9 +33,9 @@ pub fn human_bet(index : usize, available : u32) -> u32 {
             s.pop();
         }
 
-        match s.parse::<u32>(){
+        match s.parse::<u32>() {
             Ok(va) => return va,
-            Err(_) => ()
+            Err(_) => (),
         }
     }
 }
@@ -56,7 +53,7 @@ pub fn human_play(
         if is_second { ", second hand" } else { "" }
     );
     println!("The board is currently in the following state : \n");
-    display_hand_and_scores(scores, player_hands, dealer_hand);
+    display_hands_and_scores(scores, player_hands, dealer_hand);
     println!("\nPlease enter your move : Hit, Stand or Split.");
     loop {
         let mut s = String::new();
