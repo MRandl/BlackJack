@@ -3,11 +3,15 @@ use crate::display::display_hands_and_scores;
 use crate::math::NUM_PLAYERS_AND_DEALER;
 use std::io::stdin;
 
+/// The enum for the player types. 
+/// A player can be human or a bot.
 pub enum Player {
     Bot,
     Human,
 }
 
+/// The enum for player actions. Currently supported
+/// actions are Hit, Stand and Split.
 #[derive(PartialEq)]
 pub enum PlayerAction {
     Hit,
@@ -16,6 +20,8 @@ pub enum PlayerAction {
     Split,
 }
 
+/// This method asks the player at a given index for 
+/// his bet at this round, by reading his answer in the terminal.
 pub fn human_bet(index: usize, available: u32) -> u32 {
     println!("------------------------");
     println!("You are player {}.", index + 1);
@@ -39,6 +45,9 @@ pub fn human_bet(index: usize, available: u32) -> u32 {
         }
     }
 }
+
+/// This method asks a human player for the action
+/// by reading his answer from the terminal.
 pub fn human_play(
     scores: &[(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
     player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
@@ -76,6 +85,8 @@ pub fn human_play(
     }
 }
 
+/// This method implements the decision algorithm used by bots to play
+/// It will be the focus of future work on AI improvements.
 pub fn bot_play(
     scores: &[(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
     _player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
