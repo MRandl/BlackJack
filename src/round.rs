@@ -3,6 +3,9 @@ use crate::math::*;
 use crate::player::{bot_play, human_bet, human_play, Player, PlayerAction};
 use crate::utils::pick_card;
 
+
+/// Plays a full round by dealing the cards and
+/// calling [play_turn] for each of the players.
 pub fn play_round(
     player_hands: &mut Vec<(Vec<Card>, Option<Vec<Card>>)>,
     dealer_hand: &mut Vec<Card>,
@@ -39,7 +42,7 @@ pub fn play_round(
             bets,
             bank,
         );
-
+        //if player has split, play the split
         if index < NUM_PLAYERS && player_hands[index].1.is_some() {
             play_turn(
                 player_hands,
@@ -54,7 +57,9 @@ pub fn play_round(
         }
     }
 }
-
+/// Asks one players to play their turn,
+/// using repeated calls to the helper function [pick_action]
+/// until the action is Stand.
 fn play_turn(
     player_hands: &mut Vec<(Vec<Card>, Option<Vec<Card>>)>,
     dealer_hand: &mut Vec<Card>,
@@ -129,6 +134,11 @@ fn play_turn(
     }
 }
 
+
+/// Asks a player to give an action to follow until the action
+/// in question is legal, and returns it.
+/// 
+/// Automatically Stands when the hand has more than 21 points.
 fn pick_action(
     scores: &[(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
     player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
@@ -151,8 +161,8 @@ fn pick_action(
             match action {
                 //make sure splitting is legal, the rest always is
                 PlayerAction::Split => {
-                    if player_hands[index].1.is_none()
-                        && index < NUM_PLAYERS
+                    if player_hands[index].1.is_none() //not already split
+                        && index < NUM_PLAYERS //not the dealer
                         && is_splittable(&player_hands[index].0)
                         && bank[index] >= bets[index]
                     {
@@ -167,6 +177,13 @@ fn pick_action(
     }
 }
 
+/// Asks for a betting amount from the player.
+/// 
+/// Bots always bet half of their bank reserve.
+/// Humans may pick a bet of their choosing.
+/// This method does not check whether the player
+/// has enough resources to make such a bet, this is done
+/// at a higher-level. 
 fn pick_bet(index: usize, player_type: &Player, available: u32) -> u32 {
     match player_type {
         Player::Bot => available >> 1,
