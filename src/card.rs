@@ -1,5 +1,12 @@
 use std::fmt::Display;
 
+/// The four Suits of any classical card 
+/// game. 
+/// 
+/// This enum implements PartialEq and 
+/// Display.
+/// It also includes a static method [Suit::from_int] 
+/// that maps an u32 supplied as argument to one of the suits.
 #[derive(PartialEq)]
 pub enum Suit {
     Spades,
@@ -34,6 +41,13 @@ impl Suit {
     }
 }
 
+/// The thirteen Ranks of any classical card 
+/// game. 
+/// 
+/// This enum implements PartialEq and 
+/// Display.
+/// It also includes a static method [Rank::from_int] 
+/// that maps an u32 supplied as argument to one of the ranks.
 #[derive(PartialEq)]
 pub enum Rank {
     Two,
@@ -95,6 +109,14 @@ impl Rank {
     }
 }
 
+
+/// A playing Card composed of a [Suit] and a
+/// [Rank].
+/// 
+/// This struct implements Display.
+/// It also includes a static method [Card::card_pack] to
+/// create a new card pack of 52 [Card]s,
+/// made of all combinations of [Suit]s and [Rank]s
 #[derive(PartialEq)]
 pub struct Card {
     pub suit: Suit,
