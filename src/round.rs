@@ -165,6 +165,9 @@ fn pick_action(
                         && bank[index] >= bets[index]
                     {
                         return action;
+                    } else if bank[index] < bets[index] {
+                        println!("Not enough money !");
+                        ()
                     } else {
                         ()
                     }
