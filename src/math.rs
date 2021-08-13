@@ -1,7 +1,12 @@
 use crate::card::*;
 
+/// The number of packs to use when shuffling the cards.
 pub const NUM_PACKS: usize = 4;
+
+/// The amount of non-dealer players.
 pub const NUM_PLAYERS: usize = 2;
+
+/// The amount of players, including the dealer.
 pub const NUM_PLAYERS_AND_DEALER: usize = NUM_PLAYERS + 1;
 
 /// Computes the total value of a playing hand.
@@ -44,10 +49,17 @@ fn hand_value(hand: &Vec<Card>) -> u32 {
     value
 }
 
+/// This method returns true whenever its argument
+/// is a hand that corresponds to a BlackJack.
 pub fn is_blackjack(hand: &Vec<Card>) -> bool {
     hand.len() == 2 && hand_value(hand) == 21
 }
 
+/// This method returns true whenever its argument
+/// is a hand that can be legally split.
+/// 
+/// This occurs when the player has not hit yet, 
+/// and both his cards have the same rank.
 pub fn is_splittable(hand: &Vec<Card>) -> bool {
     hand.len() == 2 && {
         let hand_0 = hand.get(0).unwrap();
@@ -73,6 +85,16 @@ pub fn compute_scores(
     scores
 }
 
+/// This method computes which player beat the dealer,
+/// reached equality, or lost, based on an array of scores.
+/// 
+/// This outputs three Vectors of (usize, bool). 
+/// The first Vector corresponds to hands that won against 
+/// the dealer. The second correspond to equalities, and the 
+/// third to losses. The tuples correspond to the index of 
+/// the player, and a boolean equal to true if and only if
+/// the hand is the second of the player, in case of a split.
+/// Typically, the boolean is false.
 pub fn compute_result(
     scores: [(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
 ) -> (Vec<(usize, bool)>, Vec<(usize, bool)>, Vec<(usize, bool)>) {
