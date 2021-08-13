@@ -48,10 +48,10 @@ pub fn update_bank(
     }
 }
 
-pub fn is_playable(bank : &Vec<u32>) -> bool {
+pub fn is_playable(bank: &Vec<u32>) -> bool {
     for &b in bank {
         if b == 0 {
-            return false
+            return false;
         }
     }
     true

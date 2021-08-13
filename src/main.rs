@@ -27,7 +27,6 @@ fn main() {
     init_game(&mut player_hands, &mut card_deck, &mut bank);
 
     while is_playable(&bank) {
-
         play_round(
             &mut player_hands,
             &mut dealer_hand,
