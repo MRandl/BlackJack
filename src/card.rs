@@ -141,8 +141,6 @@ impl std::fmt::Display for Card {
     }
 }
 
-#[cfg(test)]
-
 #[test]
 fn card_pack() {
     let mut card_pack = Card::card_pack();
