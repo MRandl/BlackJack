@@ -1,3 +1,4 @@
+[![Rust](https://github.com/MRandl/BlackJack/actions/workflows/rust.yml/badge.svg?branch=main)](https://github.com/MRandl/BlackJack/actions/workflows/rust.yml)
 # BlackJack 
 This project is an implementation of the BlackJack card game in Rust. It supports same-host multiplayer as well as automatic bot players, and is entirely based on a terminal command line interface.
 
