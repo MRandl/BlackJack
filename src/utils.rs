@@ -65,15 +65,14 @@ pub fn is_playable(bank: &Vec<u32>) -> bool {
     true
 }
 
-
 #[cfg(test)]
 mod tests {
     use crate::utils::*;
     #[test]
     fn init_test() {
-        let mut hands = vec!();
-        let mut pack  = vec!();
-        let mut bank  = vec!();
+        let mut hands = vec![];
+        let mut pack = vec![];
+        let mut bank = vec![];
         init_game(&mut hands, &mut pack, &mut bank);
         assert_eq!(NUM_PLAYERS, hands.len());
         assert_eq!(4 * 52, pack.len());
@@ -82,7 +81,7 @@ mod tests {
 
     #[test]
     fn pick_test() {
-        let mut pack = vec!();
+        let mut pack = vec![];
         let _ = pick_card(&mut pack);
         assert!(pack.len() == 4 * 52 - 1);
         let _ = pick_card(&mut pack);
@@ -91,10 +90,10 @@ mod tests {
 
     #[test]
     fn update_bank_test() {
-        let mut bank = vec!(300, 300);
-        let bets = vec!(300, 300);
-        let win = vec!((0, false));
-        let equ = vec!((1, false));
+        let mut bank = vec![300, 300];
+        let bets = vec![300, 300];
+        let win = vec![(0, false)];
+        let equ = vec![(1, false)];
         update_bank(&win, &equ, &mut bank, &bets);
 
         assert_eq!(vec!(900, 600), bank);
@@ -102,8 +101,8 @@ mod tests {
 
     #[test]
     fn is_playable_test() {
-        let bank1 = vec!(300, 300, 22);
-        let bank2 = vec!(300, 0, 4);
+        let bank1 = vec![300, 300, 22];
+        let bank2 = vec![300, 0, 4];
 
         assert!(is_playable(&bank1) && !is_playable(&bank2));
     }
