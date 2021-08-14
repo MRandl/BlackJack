@@ -144,17 +144,20 @@ pub fn wait_for_enter() {
     let _ = std::io::stdin().read_line(&mut String::new());
 }
 
-
 #[cfg(test)]
 mod tests {
     use crate::display::*;
-    
+
     #[test]
     fn call_displays_do_not_crash() {
         //kind of a weak test but i don't want to add boiler plate for DI
-        display_results(&vec!(), &vec!(), &vec!());
-        display_bank(&vec!());
-        display_hands_and_scores(&[(0, None); 3], &vec!((vec!(), None), (vec!(), None)), &vec!())
+        display_results(&vec![], &vec![], &vec![]);
+        display_bank(&vec![]);
+        display_hands_and_scores(
+            &[(0, None); 3],
+            &vec![(vec![], None), (vec![], None)],
+            &vec![],
+        )
     }
 
     #[test]

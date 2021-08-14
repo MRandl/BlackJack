@@ -144,20 +144,35 @@ impl std::fmt::Display for Card {
 #[cfg(test)]
 mod tests {
     use crate::card::*;
-    
+
     #[test]
     fn card_pack() {
         let mut card_pack = Card::card_pack();
         let card = card_pack.pop();
         assert!(card.is_some());
-        assert!(card.unwrap() == Card{rank : Rank::Ace, suit : Suit::Clubs}) 
+        assert!(
+            card.unwrap()
+                == Card {
+                    rank: Rank::Ace,
+                    suit: Suit::Clubs
+                }
+        )
     }
-    
+
     #[test]
     fn card_display() {
-        assert_eq!("9♣", &format!("{}", Card{rank : Rank::Nine, suit: Suit::Clubs}))
+        assert_eq!(
+            "9♣",
+            &format!(
+                "{}",
+                Card {
+                    rank: Rank::Nine,
+                    suit: Suit::Clubs
+                }
+            )
+        )
     }
-    
+
     #[test]
     fn suit_display() {
         assert_eq!("♣", &format!("{}", Suit::Clubs));
@@ -165,7 +180,7 @@ mod tests {
         assert_eq!("♦", &format!("{}", Suit::Diamonds));
         assert_eq!("♠", &format!("{}", Suit::Spades));
     }
-    
+
     #[test]
     fn suit_from_int() {
         assert!(Suit::Spades == Suit::from_int(0));
@@ -174,9 +189,9 @@ mod tests {
         assert!(Suit::Clubs == Suit::from_int(3));
         assert!(Suit::Spades == Suit::from_int(4));
     }
-    
+
     #[test]
-    fn rank_display(){
+    fn rank_display() {
         assert_eq!("2", &format!("{}", Rank::Two));
         assert_eq!("3", &format!("{}", Rank::Three));
         assert_eq!("4", &format!("{}", Rank::Four));
@@ -191,8 +206,8 @@ mod tests {
         assert_eq!("K", &format!("{}", Rank::King));
         assert_eq!("A", &format!("{}", Rank::Ace));
     }
-    
-    #[test] 
+
+    #[test]
     fn rank_from_int() {
         assert!(Rank::Two == Rank::from_int(0));
         assert!(Rank::Three == Rank::from_int(1));
@@ -210,4 +225,3 @@ mod tests {
         assert!(Rank::Two == Rank::from_int(13));
     }
 }
-
