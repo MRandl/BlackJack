@@ -144,16 +144,22 @@ pub fn wait_for_enter() {
     let _ = std::io::stdin().read_line(&mut String::new());
 }
 
-#[test]
-fn call_displays_do_not_crash() {
-    //kind of a weak test but i don't want to add boiler plate for DI
-    display_results(&vec!(), &vec!(), &vec!());
-    display_bank(&vec!());
-    display_hands_and_scores(&[(0, None); 3], &vec!((vec!(), None), (vec!(), None)), &vec!())
-}
 
-#[test]
-fn player_name_test() {
-    assert_eq!("Dealer", &player_name(NUM_PLAYERS));
-    assert_eq!("Player 1", &player_name(0))
+#[cfg(test)]
+mod tests {
+    use crate::display::*;
+    
+    #[test]
+    fn call_displays_do_not_crash() {
+        //kind of a weak test but i don't want to add boiler plate for DI
+        display_results(&vec!(), &vec!(), &vec!());
+        display_bank(&vec!());
+        display_hands_and_scores(&[(0, None); 3], &vec!((vec!(), None), (vec!(), None)), &vec!())
+    }
+
+    #[test]
+    fn player_name_test() {
+        assert_eq!("Dealer", &player_name(NUM_PLAYERS));
+        assert_eq!("Player 1", &player_name(0))
+    }
 }
