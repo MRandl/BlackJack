@@ -140,3 +140,88 @@ impl std::fmt::Display for Card {
         write!(f, "{}{}", self.rank, self.suit)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::card::*;
+
+    #[test]
+    fn card_pack() {
+        let mut card_pack = Card::card_pack();
+        let card = card_pack.pop();
+        assert!(card.is_some());
+        assert!(
+            card.unwrap()
+                == Card {
+                    rank: Rank::Ace,
+                    suit: Suit::Clubs
+                }
+        )
+    }
+
+    #[test]
+    fn card_display() {
+        assert_eq!(
+            "9♣",
+            &format!(
+                "{}",
+                Card {
+                    rank: Rank::Nine,
+                    suit: Suit::Clubs
+                }
+            )
+        )
+    }
+
+    #[test]
+    fn suit_display() {
+        assert_eq!("♣", &format!("{}", Suit::Clubs));
+        assert_eq!("♥", &format!("{}", Suit::Hearts));
+        assert_eq!("♦", &format!("{}", Suit::Diamonds));
+        assert_eq!("♠", &format!("{}", Suit::Spades));
+    }
+
+    #[test]
+    fn suit_from_int() {
+        assert!(Suit::Spades == Suit::from_int(0));
+        assert!(Suit::Hearts == Suit::from_int(1));
+        assert!(Suit::Diamonds == Suit::from_int(2));
+        assert!(Suit::Clubs == Suit::from_int(3));
+        assert!(Suit::Spades == Suit::from_int(4));
+    }
+
+    #[test]
+    fn rank_display() {
+        assert_eq!("2", &format!("{}", Rank::Two));
+        assert_eq!("3", &format!("{}", Rank::Three));
+        assert_eq!("4", &format!("{}", Rank::Four));
+        assert_eq!("5", &format!("{}", Rank::Five));
+        assert_eq!("6", &format!("{}", Rank::Six));
+        assert_eq!("7", &format!("{}", Rank::Seven));
+        assert_eq!("8", &format!("{}", Rank::Eight));
+        assert_eq!("9", &format!("{}", Rank::Nine));
+        assert_eq!("10", &format!("{}", Rank::Ten));
+        assert_eq!("J", &format!("{}", Rank::Jack));
+        assert_eq!("Q", &format!("{}", Rank::Queen));
+        assert_eq!("K", &format!("{}", Rank::King));
+        assert_eq!("A", &format!("{}", Rank::Ace));
+    }
+
+    #[test]
+    fn rank_from_int() {
+        assert!(Rank::Two == Rank::from_int(0));
+        assert!(Rank::Three == Rank::from_int(1));
+        assert!(Rank::Four == Rank::from_int(2));
+        assert!(Rank::Five == Rank::from_int(3));
+        assert!(Rank::Six == Rank::from_int(4));
+        assert!(Rank::Seven == Rank::from_int(5));
+        assert!(Rank::Eight == Rank::from_int(6));
+        assert!(Rank::Nine == Rank::from_int(7));
+        assert!(Rank::Ten == Rank::from_int(8));
+        assert!(Rank::Jack == Rank::from_int(9));
+        assert!(Rank::Queen == Rank::from_int(10));
+        assert!(Rank::King == Rank::from_int(11));
+        assert!(Rank::Ace == Rank::from_int(12));
+        assert!(Rank::Two == Rank::from_int(13));
+    }
+}

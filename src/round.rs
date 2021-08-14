@@ -192,3 +192,29 @@ fn pick_bet(index: usize, player_type: &Player, available: u32) -> u32 {
         Player::Human => human_bet(index, available),
     }
 }
+
+#[cfg(test)]
+mod test {
+    use crate::card::*;
+    use crate::round::*;
+    #[test]
+    fn play_round_test() {
+        let card1 = Card {
+            rank: Rank::Two,
+            suit: Suit::Diamonds,
+        };
+        let card2 = Card {
+            rank: Rank::Two,
+            suit: Suit::Clubs,
+        };
+
+        play_round(
+            &mut vec![(vec![card1], None), (vec![card2], None)],
+            &mut vec![],
+            &mut vec![],
+            &vec![Player::Bot, Player::Bot, Player::Bot],
+            &mut vec![0, 0, 0],
+            &mut vec![0, 0, 0],
+        )
+    }
+}
