@@ -127,3 +127,42 @@ pub fn compute_result(
     }
     (winner_index, equal_index, loser_index)
 }
+
+#[cfg(test)]
+
+mod tests {
+    use crate::math::*;
+
+    #[test]
+    fn black_jack_test() {
+        assert!(is_blackjack(&vec!(Card{suit : Suit::Diamonds, rank: Rank::King}, Card{suit : Suit::Clubs, rank: Rank::Ace})));
+        assert!(!is_blackjack(&vec!(Card{suit : Suit::Diamonds, rank: Rank::Eight}, Card{suit : Suit::Clubs, rank: Rank::Ace})));
+        assert!(!is_blackjack(&vec!(Card{suit : Suit::Diamonds, rank: Rank::King}, Card{suit : Suit::Clubs, rank: Rank::Ace}, Card{suit : Suit::Clubs, rank: Rank::Ten})))
+    }
+
+    #[test]
+    fn is_splittable_test() {
+        assert!(is_splittable(&vec!(Card{suit : Suit::Diamonds, rank: Rank::King}, Card{suit : Suit::Clubs, rank: Rank::King})));
+        assert!(!is_splittable(&vec!(Card{suit : Suit::Diamonds, rank: Rank::Eight}, Card{suit : Suit::Clubs, rank: Rank::Ace})));
+        assert!(!is_splittable(&vec!(Card{suit : Suit::Diamonds, rank: Rank::King}, Card{suit : Suit::Clubs, rank: Rank::King}, Card{suit : Suit::Clubs, rank: Rank::King})))
+    }
+
+    #[test]
+    fn compute_scores_test() {
+        let card1 = Card{suit: Suit::Diamonds, rank: Rank::Two};
+        let card2 = Card{suit: Suit::Clubs, rank: Rank::Two};
+        let card3 = Card{suit: Suit::Hearts, rank: Rank::Two};
+
+        assert_eq!([(0, None); 3], compute_scores(&vec!((vec!(), None), (vec!(), None)), &vec!()));
+        assert_eq!([(2, None); 3], compute_scores(&vec!((vec!(card1), None), (vec!(card2), None)), &vec!(card3)));
+    }
+
+    #[test]
+    fn compute_result_test() {
+        let (win, equ, los) = compute_result([(0, Some(0)); 3]);
+        assert!(win.is_empty() && equ.len() == 4 && los.is_empty());
+
+        let (win, equ, los) = compute_result([(10, Some(10)), (0, Some(0)), (5, None)]);
+        assert!(win.len() == 2 && equ.is_empty() && los.len() == 2);
+    }
+}
