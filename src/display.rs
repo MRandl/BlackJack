@@ -147,9 +147,11 @@ pub fn wait_for_enter() {
 
 pub fn ask_for_player_types() -> Vec<PlayerType> {
     let mut ret = Vec::new();
-    println!("Please enter the amount of players (not including the dealer) your game should have:");
+    println!(
+        "Please enter the amount of players (not including the dealer) your game should have:"
+    );
     let player_num = read_num();
-    for index in 0..player_num{
+    for index in 0..player_num {
         println!("Please enter type of player {}.", index + 1);
         ret.push(read_player_type());
     }
@@ -193,7 +195,7 @@ fn read_player_type() -> PlayerType {
         match s.as_str() {
             "Human" => return PlayerType::Human,
             "Bot" => return PlayerType::Bot,
-            _ => println!("Not a valid type! Try again")
+            _ => println!("Not a valid type! Try again"),
         }
     }
 }
@@ -220,4 +222,3 @@ mod tests {
         assert_eq!("Player 1", &player_name(0, 1))
     }
 }
-
