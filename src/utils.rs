@@ -77,7 +77,7 @@ mod tests {
         init_game(&mut hands, &mut pack, &mut bank, 5);
         assert_eq!(5, hands.len());
         assert_eq!(4 * 52, pack.len());
-        assert_eq!(vec!(300, 300), bank);
+        assert_eq!(vec!(300; 5), bank);
     }
 
     #[test]

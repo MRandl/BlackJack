@@ -219,11 +219,11 @@ mod tests {
         };
 
         assert_eq!(
-            [(0, None); 3],
+            vec![(0, None); 3],
             compute_scores(&vec!((vec!(), None), (vec!(), None)), &vec!())
         );
         assert_eq!(
-            [(2, None); 3],
+            vec![(2, None); 3],
             compute_scores(
                 &vec!((vec!(card1), None), (vec!(card2), None)),
                 &vec!(card3)
@@ -233,7 +233,7 @@ mod tests {
 
     #[test]
     fn compute_result_test() {
-        let (win, equ, los) = compute_result(vec!((0, None); 3));
+        let (win, equ, los) = compute_result(vec!((0, None); 5));
         assert!(win.is_empty() && equ.len() == 4 && los.is_empty());
 
         let (win, equ, los) = compute_result(vec!((10, Some(10)), (0, Some(0)), (5, None)));
