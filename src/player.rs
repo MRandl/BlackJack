@@ -1,6 +1,5 @@
 use crate::card::Card;
 use crate::display::display_hands_and_scores;
-use crate::math::NUM_PLAYERS_AND_DEALER;
 use std::io::stdin;
 
 /// The enum for the player types.
@@ -49,7 +48,7 @@ pub fn human_bet(index: usize, available: u32) -> u32 {
 /// This method asks a human player for the action
 /// by reading his answer from the terminal.
 pub fn human_play(
-    scores: &[(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
+    scores: &Vec<(u32, Option<u32>)>,
     player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
     dealer_hand: &Vec<Card>,
     is_second: bool,
@@ -88,7 +87,7 @@ pub fn human_play(
 /// This method implements the decision algorithm used by bots to play
 /// It will be the focus of future work on AI improvements.
 pub fn bot_play(
-    scores: &[(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
+    scores: &Vec<(u32, Option<u32>)>,
     _player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
     _dealer_hand: &Vec<Card>,
     is_second: bool,

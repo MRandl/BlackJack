@@ -14,7 +14,7 @@ pub fn play_round(
     bank: &mut Vec<u32>,
 ) {
     for (index, typ) in player_types.iter().enumerate() {
-        if index < NUM_PLAYERS {
+        if index < player_hands.len() {
             let mut try_bet = pick_bet(index, typ, bank[index]);
             while try_bet > bank[index] {
                 try_bet = pick_bet(index, typ, bank[index]);
@@ -42,7 +42,7 @@ pub fn play_round(
             bank,
         );
         //if player has split, play the split
-        if index < NUM_PLAYERS && player_hands[index].1.is_some() {
+        if index < player_hands.len() && player_hands[index].1.is_some() {
             play_turn(
                 player_hands,
                 dealer_hand,
@@ -138,7 +138,7 @@ fn play_turn(
 ///
 /// Automatically Stands when the hand has more than 21 points.
 fn pick_action(
-    scores: &[(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
+    scores: &Vec<(u32, Option<u32>)>,
     player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
     dealer_hand: &Vec<Card>,
     index: usize,
@@ -160,7 +160,7 @@ fn pick_action(
                 //make sure splitting is legal, the rest always is
                 PlayerAction::Split => {
                     if player_hands[index].1.is_none() //not already split
-                        && index < NUM_PLAYERS //not the dealer
+                        && index < player_hands.len() //not the dealer
                         && is_splittable(&player_hands[index].0)
                         && bank[index] >= bets[index]
                     {
