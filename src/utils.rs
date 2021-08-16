@@ -1,4 +1,4 @@
-use crate::math::{NUM_PACKS, NUM_PLAYERS};
+use crate::math::NUM_PACKS;
 use crate::Card;
 
 use rand::seq::SliceRandom;
@@ -10,13 +10,14 @@ pub fn init_game(
     player_hands: &mut Vec<(Vec<Card>, Option<Vec<Card>>)>,
     pack: &mut Vec<Card>,
     bank: &mut Vec<u32>,
+    num_players: usize,
 ) {
     for _ in 0..NUM_PACKS {
         pack.extend(Card::card_pack());
     }
     pack.shuffle(&mut thread_rng());
 
-    for _ in 0..NUM_PLAYERS {
+    for _ in 0..num_players {
         player_hands.push((Vec::new(), None));
         bank.push(300);
     }
@@ -73,10 +74,10 @@ mod tests {
         let mut hands = vec![];
         let mut pack = vec![];
         let mut bank = vec![];
-        init_game(&mut hands, &mut pack, &mut bank);
-        assert_eq!(NUM_PLAYERS, hands.len());
+        init_game(&mut hands, &mut pack, &mut bank, 5);
+        assert_eq!(5, hands.len());
         assert_eq!(4 * 52, pack.len());
-        assert_eq!(vec!(300, 300), bank);
+        assert_eq!(vec!(300; 5), bank);
     }
 
     #[test]

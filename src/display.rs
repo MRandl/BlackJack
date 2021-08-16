@@ -1,5 +1,6 @@
 use crate::card::Card;
-use crate::math::{is_blackjack, NUM_PLAYERS, NUM_PLAYERS_AND_DEALER};
+use crate::math::is_blackjack;
+use crate::player::PlayerType;
 
 /// This method displays the hands and scores
 /// of all players in a human-readable format.
@@ -21,12 +22,12 @@ use crate::math::{is_blackjack, NUM_PLAYERS, NUM_PLAYERS_AND_DEALER};
 /// of non-dealer players.
 /// * `dealer_hand` The hand of the dealer.
 pub fn display_hands_and_scores(
-    scores: &[(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
+    scores: &Vec<(u32, Option<u32>)>,
     player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
     dealer_hand: &Vec<Card>,
 ) {
     for (index, score) in scores.into_iter().enumerate() {
-        let player_hand: (&Vec<Card>, Option<&Vec<Card>>) = if index < NUM_PLAYERS {
+        let player_hand: (&Vec<Card>, Option<&Vec<Card>>) = if index < player_hands.len() {
             let tup = player_hands.get(index).unwrap();
             (&tup.0, tup.1.as_ref())
         } else {
@@ -46,7 +47,7 @@ pub fn display_hands_and_scores(
             stri.push('}');
             println!(
                 "{} got hand {} with value {}!{}",
-                player_name(index),
+                player_name(index, player_hands.len()),
                 stri,
                 if index_of_split == 0 {
                     //if we are not in the split hand
@@ -118,8 +119,8 @@ fn display_result_vector(index: &Vec<(usize, bool)>, name: &str) {
 /// Indices from 0 to the number
 /// of non-dealer players are mapped to the String
 /// `Player $i` and the other numbers map to "Dealer".
-fn player_name(index: usize) -> String {
-    if index < NUM_PLAYERS {
+fn player_name(index: usize, num_players: usize) -> String {
+    if index < num_players {
         format!("Player {}", index + 1)
     } else {
         String::from("Dealer")
@@ -144,6 +145,61 @@ pub fn wait_for_enter() {
     let _ = std::io::stdin().read_line(&mut String::new());
 }
 
+pub fn ask_for_player_types() -> Vec<PlayerType> {
+    let mut ret = Vec::new();
+    println!(
+        "Please enter the amount of players (not including the dealer) your game should have:"
+    );
+    let player_num = read_num();
+    for index in 0..player_num {
+        println!("Please enter type of player {}.", index + 1);
+        ret.push(read_player_type());
+    }
+    ret.push(PlayerType::Bot); //dealer
+    ret
+}
+
+fn read_num() -> u32 {
+    loop {
+        let mut s = String::new();
+        std::io::stdin()
+            .read_line(&mut s)
+            .expect("Did not enter a correct string");
+        if s.ends_with('\n') {
+            s.pop();
+        }
+        if s.ends_with('\r') {
+            s.pop();
+        }
+
+        match s.parse::<u32>() {
+            Ok(va) => return va,
+            Err(_) => println!("Not a number! Try again"),
+        }
+    }
+}
+
+fn read_player_type() -> PlayerType {
+    loop {
+        let mut s = String::new();
+        std::io::stdin()
+            .read_line(&mut s)
+            .expect("Did not enter a correct string");
+        if s.ends_with('\n') {
+            s.pop();
+        }
+        if s.ends_with('\r') {
+            s.pop();
+        }
+
+        match s.as_str() {
+            "Human" => return PlayerType::Human,
+            "Bot" => return PlayerType::Bot,
+            _ => println!("Not a valid type! Try again"),
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::display::*;
@@ -154,7 +210,7 @@ mod tests {
         display_results(&vec![], &vec![], &vec![]);
         display_bank(&vec![]);
         display_hands_and_scores(
-            &[(0, None); 3],
+            &vec![(0, None); 3],
             &vec![(vec![], None), (vec![], None)],
             &vec![],
         )
@@ -162,7 +218,7 @@ mod tests {
 
     #[test]
     fn player_name_test() {
-        assert_eq!("Dealer", &player_name(NUM_PLAYERS));
-        assert_eq!("Player 1", &player_name(0))
+        assert_eq!("Dealer", &player_name(5, 5));
+        assert_eq!("Player 1", &player_name(0, 1))
     }
 }

@@ -10,7 +10,6 @@ mod utils;
 use card::*;
 use display::*;
 use math::*;
-use player::*;
 use round::*;
 use utils::*;
 
@@ -18,13 +17,18 @@ fn main() {
     print!("\n\n");
 
     let mut card_deck: Vec<Card> = Vec::new(); //will be filled with a few card packs
-    let player_types = vec![Player::Human, Player::Bot, Player::Bot];
+    let player_types = ask_for_player_types();
     let mut player_hands: Vec<(Vec<Card>, Option<Vec<Card>>)> = Vec::new();
     let mut dealer_hand: Vec<Card> = Vec::new();
 
     let mut bank = Vec::new(); //contains the reserves of each player
     let mut bets = Vec::new(); //contains the current bets the players make
-    init_game(&mut player_hands, &mut card_deck, &mut bank);
+    init_game(
+        &mut player_hands,
+        &mut card_deck,
+        &mut bank,
+        player_types.len() - 1,
+    );
 
     while is_playable(&bank) {
         play_round(

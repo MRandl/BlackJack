@@ -1,6 +1,6 @@
 use crate::card::Card;
 use crate::math::*;
-use crate::player::{bot_play, human_bet, human_play, Player, PlayerAction};
+use crate::player::{bot_play, human_bet, human_play, PlayerAction, PlayerType};
 use crate::utils::pick_card;
 
 /// Plays a full round by dealing the cards and
@@ -9,12 +9,12 @@ pub fn play_round(
     player_hands: &mut Vec<(Vec<Card>, Option<Vec<Card>>)>,
     dealer_hand: &mut Vec<Card>,
     pack: &mut Vec<Card>,
-    player_types: &Vec<Player>,
+    player_types: &Vec<PlayerType>,
     bets: &mut Vec<u32>,
     bank: &mut Vec<u32>,
 ) {
     for (index, typ) in player_types.iter().enumerate() {
-        if index < NUM_PLAYERS {
+        if index < player_hands.len() {
             let mut try_bet = pick_bet(index, typ, bank[index]);
             while try_bet > bank[index] {
                 try_bet = pick_bet(index, typ, bank[index]);
@@ -42,7 +42,7 @@ pub fn play_round(
             bank,
         );
         //if player has split, play the split
-        if index < NUM_PLAYERS && player_hands[index].1.is_some() {
+        if index < player_hands.len() && player_hands[index].1.is_some() {
             play_turn(
                 player_hands,
                 dealer_hand,
@@ -64,7 +64,7 @@ fn play_turn(
     dealer_hand: &mut Vec<Card>,
     pack: &mut Vec<Card>,
     index: usize,
-    player_type: &Player,
+    player_type: &PlayerType,
     is_second_turn: bool,
     bets: &mut Vec<u32>,
     bank: &mut Vec<u32>,
@@ -138,12 +138,12 @@ fn play_turn(
 ///
 /// Automatically Stands when the hand has more than 21 points.
 fn pick_action(
-    scores: &[(u32, Option<u32>); NUM_PLAYERS_AND_DEALER],
+    scores: &Vec<(u32, Option<u32>)>,
     player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
     dealer_hand: &Vec<Card>,
     index: usize,
     is_second: bool,
-    player_type: &Player,
+    player_type: &PlayerType,
     bets: &mut Vec<u32>,
     bank: &mut Vec<u32>,
 ) -> PlayerAction {
@@ -153,14 +153,16 @@ fn pick_action(
         loop {
             // while action is illegal, try again
             let action = match player_type {
-                Player::Bot => bot_play(scores, player_hands, dealer_hand, is_second, index),
-                Player::Human => human_play(scores, player_hands, dealer_hand, is_second, index),
+                PlayerType::Bot => bot_play(scores, player_hands, dealer_hand, is_second, index),
+                PlayerType::Human => {
+                    human_play(scores, player_hands, dealer_hand, is_second, index)
+                }
             };
             match action {
                 //make sure splitting is legal, the rest always is
                 PlayerAction::Split => {
                     if player_hands[index].1.is_none() //not already split
-                        && index < NUM_PLAYERS //not the dealer
+                        && index < player_hands.len() //not the dealer
                         && is_splittable(&player_hands[index].0)
                         && bank[index] >= bets[index]
                     {
@@ -186,10 +188,10 @@ fn pick_action(
 /// This method does not check whether the player
 /// has enough resources to make such a bet, this is done
 /// at a higher-level.
-fn pick_bet(index: usize, player_type: &Player, available: u32) -> u32 {
+fn pick_bet(index: usize, player_type: &PlayerType, available: u32) -> u32 {
     match player_type {
-        Player::Bot => available >> 1,
-        Player::Human => human_bet(index, available),
+        PlayerType::Bot => available >> 1,
+        PlayerType::Human => human_bet(index, available),
     }
 }
 
@@ -212,7 +214,7 @@ mod test {
             &mut vec![(vec![card1], None), (vec![card2], None)],
             &mut vec![],
             &mut vec![],
-            &vec![Player::Bot, Player::Bot, Player::Bot],
+            &vec![PlayerType::Bot, PlayerType::Bot, PlayerType::Bot],
             &mut vec![0, 0, 0],
             &mut vec![0, 0, 0],
         )
