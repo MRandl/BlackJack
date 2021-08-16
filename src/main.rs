@@ -10,7 +10,6 @@ mod utils;
 use card::*;
 use display::*;
 use math::*;
-use player::*;
 use round::*;
 use utils::*;
 
@@ -28,7 +27,7 @@ fn main() {
         &mut player_hands,
         &mut card_deck,
         &mut bank,
-        player_types.len(),
+        player_types.len() - 1,
     );
 
     while is_playable(&bank) {
