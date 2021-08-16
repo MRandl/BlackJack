@@ -4,7 +4,7 @@ use std::io::stdin;
 
 /// The enum for the player types.
 /// A player can be human or a bot.
-pub enum Player {
+pub enum PlayerType {
     Bot,
     Human,
 }

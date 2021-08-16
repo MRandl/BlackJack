@@ -18,7 +18,7 @@ fn main() {
     print!("\n\n");
 
     let mut card_deck: Vec<Card> = Vec::new(); //will be filled with a few card packs
-    let player_types = vec![Player::Human, Player::Bot, Player::Bot];
+    let player_types = ask_for_player_types();
     let mut player_hands: Vec<(Vec<Card>, Option<Vec<Card>>)> = Vec::new();
     let mut dealer_hand: Vec<Card> = Vec::new();
 

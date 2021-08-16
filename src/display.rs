@@ -1,5 +1,6 @@
 use crate::card::Card;
 use crate::math::{is_blackjack};
+use crate::player::PlayerType;
 
 /// This method displays the hands and scores
 /// of all players in a human-readable format.
@@ -142,6 +143,10 @@ pub fn display_bank(bank: &Vec<u32>) {
 pub fn wait_for_enter() {
     println!("Please press ENTER to continue.");
     let _ = std::io::stdin().read_line(&mut String::new());
+}
+
+pub fn ask_for_player_types() -> Vec<PlayerType> {
+    Vec::new()
 }
 
 #[cfg(test)]

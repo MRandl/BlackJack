@@ -1,6 +1,6 @@
 use crate::card::Card;
 use crate::math::*;
-use crate::player::{bot_play, human_bet, human_play, Player, PlayerAction};
+use crate::player::{bot_play, human_bet, human_play, PlayerType, PlayerAction};
 use crate::utils::pick_card;
 
 /// Plays a full round by dealing the cards and
@@ -9,7 +9,7 @@ pub fn play_round(
     player_hands: &mut Vec<(Vec<Card>, Option<Vec<Card>>)>,
     dealer_hand: &mut Vec<Card>,
     pack: &mut Vec<Card>,
-    player_types: &Vec<Player>,
+    player_types: &Vec<PlayerType>,
     bets: &mut Vec<u32>,
     bank: &mut Vec<u32>,
 ) {
@@ -64,7 +64,7 @@ fn play_turn(
     dealer_hand: &mut Vec<Card>,
     pack: &mut Vec<Card>,
     index: usize,
-    player_type: &Player,
+    player_type: &PlayerType,
     is_second_turn: bool,
     bets: &mut Vec<u32>,
     bank: &mut Vec<u32>,
@@ -143,7 +143,7 @@ fn pick_action(
     dealer_hand: &Vec<Card>,
     index: usize,
     is_second: bool,
-    player_type: &Player,
+    player_type: &PlayerType,
     bets: &mut Vec<u32>,
     bank: &mut Vec<u32>,
 ) -> PlayerAction {
@@ -153,8 +153,8 @@ fn pick_action(
         loop {
             // while action is illegal, try again
             let action = match player_type {
-                Player::Bot => bot_play(scores, player_hands, dealer_hand, is_second, index),
-                Player::Human => human_play(scores, player_hands, dealer_hand, is_second, index),
+                PlayerType::Bot => bot_play(scores, player_hands, dealer_hand, is_second, index),
+                PlayerType::Human => human_play(scores, player_hands, dealer_hand, is_second, index),
             };
             match action {
                 //make sure splitting is legal, the rest always is
@@ -186,10 +186,10 @@ fn pick_action(
 /// This method does not check whether the player
 /// has enough resources to make such a bet, this is done
 /// at a higher-level.
-fn pick_bet(index: usize, player_type: &Player, available: u32) -> u32 {
+fn pick_bet(index: usize, player_type: &PlayerType, available: u32) -> u32 {
     match player_type {
-        Player::Bot => available >> 1,
-        Player::Human => human_bet(index, available),
+        PlayerType::Bot => available >> 1,
+        PlayerType::Human => human_bet(index, available),
     }
 }
 
@@ -212,7 +212,7 @@ mod test {
             &mut vec![(vec![card1], None), (vec![card2], None)],
             &mut vec![],
             &mut vec![],
-            &vec![Player::Bot, Player::Bot, Player::Bot],
+            &vec![PlayerType::Bot, PlayerType::Bot, PlayerType::Bot],
             &mut vec![0, 0, 0],
             &mut vec![0, 0, 0],
         )
