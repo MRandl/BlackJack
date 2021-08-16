@@ -1,5 +1,5 @@
 use crate::card::Card;
-use crate::math::{is_blackjack};
+use crate::math::is_blackjack;
 use crate::player::PlayerType;
 
 /// This method displays the hands and scores
@@ -119,7 +119,7 @@ fn display_result_vector(index: &Vec<(usize, bool)>, name: &str) {
 /// Indices from 0 to the number
 /// of non-dealer players are mapped to the String
 /// `Player $i` and the other numbers map to "Dealer".
-fn player_name(index: usize, num_players : usize) -> String {
+fn player_name(index: usize, num_players: usize) -> String {
     if index < num_players {
         format!("Player {}", index + 1)
     } else {

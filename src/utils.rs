@@ -1,4 +1,4 @@
-use crate::math::{NUM_PACKS};
+use crate::math::NUM_PACKS;
 use crate::Card;
 
 use rand::seq::SliceRandom;

@@ -24,7 +24,12 @@ fn main() {
 
     let mut bank = Vec::new(); //contains the reserves of each player
     let mut bets = Vec::new(); //contains the current bets the players make
-    init_game(&mut player_hands, &mut card_deck, &mut bank, player_types.len());
+    init_game(
+        &mut player_hands,
+        &mut card_deck,
+        &mut bank,
+        player_types.len(),
+    );
 
     while is_playable(&bank) {
         play_round(

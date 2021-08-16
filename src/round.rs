@@ -1,6 +1,6 @@
 use crate::card::Card;
 use crate::math::*;
-use crate::player::{bot_play, human_bet, human_play, PlayerType, PlayerAction};
+use crate::player::{bot_play, human_bet, human_play, PlayerAction, PlayerType};
 use crate::utils::pick_card;
 
 /// Plays a full round by dealing the cards and
@@ -154,7 +154,9 @@ fn pick_action(
             // while action is illegal, try again
             let action = match player_type {
                 PlayerType::Bot => bot_play(scores, player_hands, dealer_hand, is_second, index),
-                PlayerType::Human => human_play(scores, player_hands, dealer_hand, is_second, index),
+                PlayerType::Human => {
+                    human_play(scores, player_hands, dealer_hand, is_second, index)
+                }
             };
             match action {
                 //make sure splitting is legal, the rest always is

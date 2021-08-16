@@ -233,10 +233,10 @@ mod tests {
 
     #[test]
     fn compute_result_test() {
-        let (win, equ, los) = compute_result(vec!((0, None); 5));
+        let (win, equ, los) = compute_result(vec![(0, None); 5]);
         assert!(win.is_empty() && equ.len() == 4 && los.is_empty());
 
-        let (win, equ, los) = compute_result(vec!((10, Some(10)), (0, Some(0)), (5, None)));
+        let (win, equ, los) = compute_result(vec![(10, Some(10)), (0, Some(0)), (5, None)]);
         assert!(win.len() == 2 && equ.is_empty() && los.len() == 2);
     }
 }
