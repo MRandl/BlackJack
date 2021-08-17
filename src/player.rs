@@ -7,6 +7,7 @@ use std::io::stdin;
 pub enum PlayerType {
     Bot,
     Human,
+    Dealer,
 }
 
 /// The enum for player actions. Currently supported
@@ -94,6 +95,14 @@ pub fn bot_play(
     index: usize,
 ) -> PlayerAction {
     if (!is_second && scores[index].0 < 15) || (is_second && scores[index].1.unwrap() < 15) {
+        PlayerAction::Hit
+    } else {
+        PlayerAction::Stand
+    }
+}
+
+pub fn dealer_play(scores: &Vec<(u32, Option<u32>)>, index: usize) -> PlayerAction {
+    if scores[index].0 < 17 {
         PlayerAction::Hit
     } else {
         PlayerAction::Stand
