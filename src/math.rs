@@ -102,7 +102,7 @@ pub fn compute_result(
         if current_index != num_players {
             if score.0 <= 21 && (score.0 > dealer_score || dealer_score > 21) {
                 winner_index.push((current_index, false));
-            } else if score.0 == dealer_score || (dealer_score > 21 && score.0 > 21) {
+            } else if score.0 <= 21 && score.0 == dealer_score {
                 equal_index.push((current_index, false));
             } else {
                 loser_index.push((current_index, false));
@@ -111,7 +111,7 @@ pub fn compute_result(
             if let Some(value) = score.1 {
                 if value <= 21 && (value > dealer_score || dealer_score > 21) {
                     winner_index.push((current_index, true));
-                } else if value == dealer_score || (dealer_score > 21 && value > 21) {
+                } else if value <= 21 && value == dealer_score {
                     equal_index.push((current_index, true));
                 } else {
                     loser_index.push((current_index, true));
