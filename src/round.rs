@@ -1,6 +1,6 @@
 use crate::card::Card;
 use crate::math::*;
-use crate::player::{bot_play, human_bet, human_play, PlayerAction, PlayerType};
+use crate::player::*;
 use crate::utils::pick_card;
 
 /// Plays a full round by dealing the cards and
@@ -153,6 +153,7 @@ fn pick_action(
         loop {
             // while action is illegal, try again
             let action = match player_type {
+                PlayerType::Dealer => dealer_play(scores, index),
                 PlayerType::Bot => bot_play(scores, player_hands, dealer_hand, is_second, index),
                 PlayerType::Human => {
                     human_play(scores, player_hands, dealer_hand, is_second, index)
@@ -192,6 +193,7 @@ fn pick_bet(index: usize, player_type: &PlayerType, available: u32) -> u32 {
     match player_type {
         PlayerType::Bot => available >> 1,
         PlayerType::Human => human_bet(index, available),
+        PlayerType::Dealer => unreachable!("Dealer does not bet"),
     }
 }
 

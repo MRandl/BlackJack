@@ -155,7 +155,7 @@ pub fn ask_for_player_types() -> Vec<PlayerType> {
         println!("Please enter type of player {}.", index + 1);
         ret.push(read_player_type());
     }
-    ret.push(PlayerType::Bot); //dealer
+    ret.push(PlayerType::Dealer);
     ret
 }
 
