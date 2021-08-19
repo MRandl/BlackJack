@@ -176,7 +176,6 @@ fn pick_action(
                 }
             };
             match action {
-                //make sure splitting is legal, the rest always is
                 PlayerAction::Split => {
                     if player_hands[index].1.is_none() //not already split
                         && index < player_hands.len() //not the dealer
@@ -189,7 +188,10 @@ fn pick_action(
                     }
                 }
                 PlayerAction::Double => {
-                    if bank[index] >= bets[index] {
+                    if bank[index] >= bets[index]
+                        && index < player_hands.len() //not the dealer
+                        && {if is_second {scores[index].1.unwrap()} else {scores[index].0}} < 21
+                    {
                         return action;
                     } else {
                         ()
