@@ -279,11 +279,11 @@ mod tests {
 
     #[test]
     fn compute_result_test() {
-        let (thre, win, equ, los) = compute_result(vec![(0, None); 5], Vec::new());
+        let (thre, win, equ, los) = compute_result(vec![(0, None); 5], vec![(false, None); 5]);
         assert!(thre.is_empty() && win.is_empty() && equ.len() == 4 && los.is_empty());
 
         let (thre, win, equ, los) =
-            compute_result(vec![(10, Some(10)), (0, Some(0)), (5, None)], Vec::new());
+            compute_result(vec![(10, Some(10)), (0, Some(0)), (5, None)], vec![(false, Some(false)), (false, Some(false)), (false, None)]);
         assert!(thre.is_empty() && win.len() == 2 && equ.is_empty() && los.len() == 2);
     }
 }
