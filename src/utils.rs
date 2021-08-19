@@ -41,13 +41,17 @@ pub fn pick_card(pack: &mut Vec<Card>) -> Card {
 }
 
 /// Adds rewards to the bank of players
-/// that won or reached equality, according to their bets.
+/// that blackjacked, won or reached equality, according to their bets.
 pub fn update_bank(
+    ttt: &Vec<(usize, bool)>,
     win: &Vec<(usize, bool)>,
     equ: &Vec<(usize, bool)>,
     bank: &mut Vec<u32>,
     bets: &Vec<u32>,
 ) {
+    for &(index, _) in ttt {
+        bank[index] += (5 * bets[index]) >> 1;
+    }
     for &(index, _) in win {
         bank[index] += 2 * bets[index];
     }
@@ -95,7 +99,7 @@ mod tests {
         let bets = vec![300, 300];
         let win = vec![(0, false)];
         let equ = vec![(1, false)];
-        update_bank(&win, &equ, &mut bank, &bets);
+        update_bank(&vec![], &win, &equ, &mut bank, &bets);
 
         assert_eq!(vec!(900, 600), bank);
     }

@@ -91,35 +91,81 @@ pub fn compute_scores(
 /// Typically, the boolean is false.
 pub fn compute_result(
     scores: Vec<(u32, Option<u32>)>,
-) -> (Vec<(usize, bool)>, Vec<(usize, bool)>, Vec<(usize, bool)>) {
+    blackjacks: Vec<(bool, Option<bool>)>,
+) -> (
+    Vec<(usize, bool)>,
+    Vec<(usize, bool)>,
+    Vec<(usize, bool)>,
+    Vec<(usize, bool)>,
+) {
+    let mut three_two_index: Vec<(usize, bool)> = Vec::new();
     let mut winner_index: Vec<(usize, bool)> = Vec::new();
     let mut equal_index: Vec<(usize, bool)> = Vec::new();
     let mut loser_index: Vec<(usize, bool)> = Vec::new();
     let num_players = scores.len() - 1;
+
+    let dealer_has_blackjack = blackjacks.last() == Some(&(true, None));
     let dealer_score = scores[num_players].0;
 
-    for (current_index, &score) in scores.iter().enumerate() {
-        if current_index != num_players {
-            if score.0 <= 21 && (score.0 > dealer_score || dealer_score > 21) {
-                winner_index.push((current_index, false));
-            } else if score.0 <= 21 && score.0 == dealer_score {
-                equal_index.push((current_index, false));
-            } else {
-                loser_index.push((current_index, false));
-            }
-
-            if let Some(value) = score.1 {
-                if value <= 21 && (value > dealer_score || dealer_score > 21) {
-                    winner_index.push((current_index, true));
-                } else if value <= 21 && value == dealer_score {
-                    equal_index.push((current_index, true));
+    for (index, score) in scores.iter().enumerate() {
+        if index != num_players {
+            if dealer_has_blackjack {
+                if blackjacks[index].0 {
+                    equal_index.push((index, false));
                 } else {
-                    loser_index.push((current_index, true));
+                    loser_index.push((index, false));
+                }
+                if let Some(bj) = blackjacks[index].1 {
+                    if bj {
+                        equal_index.push((index, true));
+                    } else {
+                        loser_index.push((index, true));
+                    }
+                }
+            } else {
+                // dealer does not have blackjack
+
+                if blackjacks[index].0 {
+                    three_two_index.push((index, false));
+                } else if score.0 <= 21 && (score.0 > dealer_score || dealer_score > 21) {
+                    winner_index.push((index, false));
+                } else if score.0 <= 21 && score.0 == dealer_score {
+                    equal_index.push((index, false));
+                } else {
+                    loser_index.push((index, false));
+                }
+
+                if let Some(value) = score.1 {
+                    if blackjacks[index].1.unwrap() {
+                        three_two_index.push((index, true));
+                    } else if value <= 21 && (value > dealer_score || dealer_score > 21) {
+                        winner_index.push((index, true));
+                    } else if value <= 21 && value == dealer_score {
+                        equal_index.push((index, true));
+                    } else {
+                        loser_index.push((index, true));
+                    }
                 }
             }
         }
     }
-    (winner_index, equal_index, loser_index)
+
+    (three_two_index, winner_index, equal_index, loser_index)
+}
+
+pub fn compute_blackjack_index(
+    player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
+    dealer_hand: &Vec<Card>,
+) -> Vec<(bool, Option<bool>)> {
+    let mut bj = Vec::with_capacity(player_hands.len() + 1);
+    for hand in player_hands {
+        bj.push((
+            is_blackjack(&hand.0),
+            hand.1.as_ref().map(|e| is_blackjack(&e)),
+        ));
+    }
+    bj.push((is_blackjack(dealer_hand), None));
+    bj
 }
 
 #[cfg(test)]
@@ -233,10 +279,13 @@ mod tests {
 
     #[test]
     fn compute_result_test() {
-        let (win, equ, los) = compute_result(vec![(0, None); 5]);
-        assert!(win.is_empty() && equ.len() == 4 && los.is_empty());
+        let (thre, win, equ, los) = compute_result(vec![(0, None); 5], vec![(false, None); 5]);
+        assert!(thre.is_empty() && win.is_empty() && equ.len() == 4 && los.is_empty());
 
-        let (win, equ, los) = compute_result(vec![(10, Some(10)), (0, Some(0)), (5, None)]);
-        assert!(win.len() == 2 && equ.is_empty() && los.len() == 2);
+        let (thre, win, equ, los) = compute_result(
+            vec![(10, Some(10)), (0, Some(0)), (5, None)],
+            vec![(false, Some(false)), (false, Some(false)), (false, None)],
+        );
+        assert!(thre.is_empty() && win.len() == 2 && equ.is_empty() && los.len() == 2);
     }
 }
