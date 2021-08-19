@@ -128,6 +128,22 @@ fn play_turn(
                     bank,
                 );
             }
+            PlayerAction::Double => {
+                let new_card = pick_card(pack);
+                {
+                    if is_second_turn {
+                        player_hands[index].1.as_mut().unwrap()
+                    } else {
+                        &mut player_hands[index].0
+                    }
+                }
+                .push(new_card);
+
+                bank[index] -= bets[index];
+                bets[index] *= 2;
+                
+                action = PlayerAction::Stand;
+            }
             PlayerAction::Stand => unreachable!(),
         }
     }
@@ -168,15 +184,20 @@ fn pick_action(
                         && bank[index] >= bets[index]
                     {
                         return action;
-                    } else if bank[index] < bets[index] {
-                        println!("Not enough money !");
+                    } else {
                         ()
+                    }
+                }
+                PlayerAction::Double => {
+                    if bank[index] >= bets[index] {
+                        return action;
                     } else {
                         ()
                     }
                 }
                 _ => return action,
             }
+            println!("Illegal action ! Try again:")
         }
     }
 }

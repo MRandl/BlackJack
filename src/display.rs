@@ -152,7 +152,7 @@ pub fn ask_for_player_types() -> Vec<PlayerType> {
     );
     let player_num = read_num();
     for index in 0..player_num {
-        println!("Please enter type of player {}.", index + 1);
+        println!("Please enter type of player {} (Human or Bot).", index + 1);
         ret.push(read_player_type());
     }
     ret.push(PlayerType::Dealer);

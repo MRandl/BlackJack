@@ -16,7 +16,7 @@ pub enum PlayerType {
 pub enum PlayerAction {
     Hit,
     Stand,
-    //Double,
+    Double,
     Split,
 }
 
@@ -63,7 +63,7 @@ pub fn human_play(
     );
     println!("The board is currently in the following state : \n");
     display_hands_and_scores(scores, player_hands, dealer_hand);
-    println!("\nPlease enter your move : Hit, Stand or Split.");
+    println!("\nPlease enter your move : Hit, Stand, Double or Split.");
     loop {
         let mut s = String::new();
         stdin()
@@ -80,6 +80,7 @@ pub fn human_play(
             "Hit" => return PlayerAction::Hit,
             "Stand" => return PlayerAction::Stand,
             "Split" => return PlayerAction::Split,
+            "Double" => return PlayerAction::Double,
             _ => println!("Unrecognized move. Please input again:"),
         };
     }
