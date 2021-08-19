@@ -99,7 +99,7 @@ mod tests {
         let bets = vec![300, 300];
         let win = vec![(0, false)];
         let equ = vec![(1, false)];
-        update_bank(&vec!(), &win, &equ, &mut bank, &bets);
+        update_bank(&vec![], &win, &equ, &mut bank, &bets);
 
         assert_eq!(vec!(900, 600), bank);
     }

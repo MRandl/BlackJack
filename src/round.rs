@@ -141,7 +141,7 @@ fn play_turn(
 
                 bank[index] -= bets[index];
                 bets[index] *= 2;
-                
+
                 action = PlayerAction::Stand;
             }
             PlayerAction::Stand => unreachable!(),
