@@ -4,6 +4,19 @@ This project is an implementation of the BlackJack card game in Rust. It support
 
 It has minimal dependencies (apart from the Rust standard library, it only uses the *rand* crate for card shuffling).
 
+## Game variant
+
+This blackjack games implements the basic blackjack rules, along with the following variants :
+
+- The dealer stands on soft 17.
+- There is no hole card ("European variant").
+- There are four card packs being played at all times.
+- The player may split only once.
+- The player may double down on a split hand.
+- The player may play anything on split Aces.
+- The player may not surrender.
+- There are no side bets (in particular, no insurance).
+
 ## Supported Architectures
 
 Your architecture must be supported by the Rust compiler, and must have access to the standard `std` crate.

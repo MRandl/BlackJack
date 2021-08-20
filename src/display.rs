@@ -34,12 +34,12 @@ pub fn display_hands_and_scores(
             (dealer_hand, None)
         };
 
-        let vec = if player_hand.1.is_none() {
+        let iterate_over = if player_hand.1.is_none() {
             vec![player_hand.0]
         } else {
             vec![player_hand.0, player_hand.1.unwrap()]
         };
-        for (index_of_split, elem) in vec.iter().enumerate() {
+        for (is_second_hand, elem) in iterate_over.iter().enumerate() {
             let mut stri = String::from("{");
             for card in *elem {
                 stri.push_str(&format!("/ {} /", card));
@@ -49,7 +49,7 @@ pub fn display_hands_and_scores(
                 "{} got hand {} with value {}!{}",
                 player_name(index, player_hands.len()),
                 stri,
-                if index_of_split == 0 {
+                if is_second_hand == 0 {
                     //if we are not in the split hand
                     score.0
                 } else {
@@ -83,10 +83,12 @@ pub fn display_hands_and_scores(
 /// but for hands that have less value as the
 /// hand of the dealer, instead of winning.
 pub fn display_results(
+    three_two_index: &Vec<(usize, bool)>,
     winner_index: &Vec<(usize, bool)>,
     equal_index: &Vec<(usize, bool)>,
     loser_index: &Vec<(usize, bool)>,
 ) {
+    display_result_vector(&three_two_index, "blackjack winners");
     display_result_vector(&winner_index, "winners");
     display_result_vector(&equal_index, "equalities");
     display_result_vector(&loser_index, "losers");
@@ -107,7 +109,7 @@ fn display_result_vector(index: &Vec<(usize, bool)>, name: &str) {
                 stri.push_str(&format!("Second player {}, ", usi + 1));
             }
         }
-        stri.pop();
+        stri.pop(); // get rid of ", "
         stri.pop();
         println!("{}\n", stri);
     }
@@ -159,7 +161,7 @@ pub fn ask_for_player_types() -> Vec<PlayerType> {
     ret
 }
 
-fn read_num() -> u32 {
+pub fn read_num() -> u32 {
     loop {
         let mut s = String::new();
         std::io::stdin()
@@ -207,7 +209,7 @@ mod tests {
     #[test]
     fn call_displays_do_not_crash() {
         //kind of a weak test but i don't want to add boiler plate for DI
-        display_results(&vec![], &vec![], &vec![]);
+        display_results(&vec![], &vec![], &vec![], &vec![]);
         display_bank(&vec![]);
         display_hands_and_scores(
             &vec![(0, None); 3],

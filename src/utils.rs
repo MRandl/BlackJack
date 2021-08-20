@@ -50,7 +50,7 @@ pub fn update_bank(
     bets: &Vec<u32>,
 ) {
     for &(index, _) in ttt {
-        bank[index] += (5 * bets[index]) >> 1;
+        bank[index] += (5 * bets[index]) >> 1; //3 for 2 reward
     }
     for &(index, _) in win {
         bank[index] += 2 * bets[index];

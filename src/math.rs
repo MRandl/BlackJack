@@ -83,9 +83,10 @@ pub fn compute_scores(
 /// reached equality, or lost, based on an array of scores.
 ///
 /// This outputs three Vectors of (usize, bool).
-/// The first Vector corresponds to hands that won against
-/// the dealer. The second correspond to equalities, and the
-/// third to losses. The tuples correspond to the index of
+/// The first Vector corresponds to hands that won with a blackjack
+/// against the dealer. The second one indicates non-blackjack wins.
+/// The third correspond to equalities, and the
+/// fourth to losses. The tuples correspond to the index of
 /// the player, and a boolean equal to true if and only if
 /// the hand is the second of the player, in case of a split.
 /// Typically, the boolean is false.
@@ -153,6 +154,9 @@ pub fn compute_result(
     (three_two_index, winner_index, equal_index, loser_index)
 }
 
+/// This function returns a vector of (bool, Option<bool>)
+/// corresponding to the hand of players, and the bools are true 
+/// if and only if the hand has a blackjack.
 pub fn compute_blackjack_index(
     player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
     dealer_hand: &Vec<Card>,
