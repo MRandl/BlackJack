@@ -12,9 +12,10 @@ This blackjack games implements the basic blackjack rules, along with the follow
 - There is no hole card ("European variant").
 - There are four card packs being played at all times.
 - The player may split only once.
-- The player may double on a split hand.
+- The player may double down on a split hand.
+- The player may play anything on split Aces.
 - The player may not surrender.
-- There are no side bets.
+- There are no side bets (in particular, no insurance).
 
 ## Supported Architectures
 
