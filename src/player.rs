@@ -90,8 +90,6 @@ pub fn human_play(
 /// Approximation of : <https://blog.prepscholar.com/blackjack-strategy>
 pub fn bot_play(
     scores: &Vec<(u32, Option<u32>)>,
-    player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
-    dealer_hand: &Vec<Card>,
     is_second: bool,
     index: usize,
     double_is_legal: bool,
