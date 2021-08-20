@@ -87,18 +87,27 @@ pub fn human_play(
 }
 
 /// This method implements the decision algorithm used by bots to play
-/// It will be the focus of future work on AI improvements.
+/// Approximation of : <https://blog.prepscholar.com/blackjack-strategy>
 pub fn bot_play(
     scores: &Vec<(u32, Option<u32>)>,
-    _player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
-    _dealer_hand: &Vec<Card>,
+    player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
+    dealer_hand: &Vec<Card>,
     is_second: bool,
     index: usize,
+    double_is_legal: bool,
 ) -> PlayerAction {
-    if (!is_second && scores[index].0 < 15) || (is_second && scores[index].1.unwrap() < 15) {
-        PlayerAction::Hit
+    let player_score = if is_second {
+        scores[index].1.unwrap()
     } else {
+        scores[index].0
+    };
+    let dealer_score = scores.last().unwrap().0;
+    if player_score > 16 || (player_score > 11 && dealer_score < 7) {
         PlayerAction::Stand
+    } else if double_is_legal && dealer_score < 7 && player_score > 8 {
+        PlayerAction::Double
+    } else {
+        PlayerAction::Hit
     }
 }
 

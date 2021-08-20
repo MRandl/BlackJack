@@ -170,7 +170,14 @@ fn pick_action(
             // while action is illegal, try again
             let action = match player_type {
                 PlayerType::Dealer => dealer_play(scores, index),
-                PlayerType::Bot => bot_play(scores, player_hands, dealer_hand, is_second, index),
+                PlayerType::Bot => bot_play(
+                    scores,
+                    player_hands,
+                    dealer_hand,
+                    is_second,
+                    index,
+                    bank[index] >= bets[index],
+                ),
                 PlayerType::Human => {
                     human_play(scores, player_hands, dealer_hand, is_second, index)
                 }
