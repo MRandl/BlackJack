@@ -13,6 +13,7 @@ pub fn play_round(
     bets: &mut Vec<u32>,
     bank: &mut Vec<u32>,
 ) {
+    //ask for bets
     for (index, typ) in player_types.iter().enumerate() {
         if index < player_hands.len() {
             let mut try_bet = pick_bet(index, typ, bank[index]);
@@ -24,12 +25,14 @@ pub fn play_round(
         }
     }
 
+    //deal cards
     for hand in player_hands.iter_mut() {
         hand.0.push(pick_card(pack));
         hand.0.push(pick_card(pack));
     }
     dealer_hand.push(pick_card(pack));
 
+    //ask each player to play
     for (index, player_type) in player_types.iter().enumerate() {
         play_turn(
             player_hands,
@@ -56,6 +59,7 @@ pub fn play_round(
         }
     }
 }
+
 /// Asks one player to play their turn,
 /// using repeated calls to the helper function [pick_action]
 /// until the action is Stand.
