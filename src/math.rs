@@ -14,7 +14,7 @@ pub const NUM_PACKS: usize = 4;
 ///
 /// For example, hand_value(&vec!(Queen of Hearts, 4 of
 /// spades, Ace of Hearts)) == 15
-fn hand_value(hand: &Vec<Card>) -> u32 {
+fn hand_value(hand: &[Card]) -> u32 {
     let mut value = 0;
     let mut found_ace = false;
 
@@ -45,7 +45,7 @@ fn hand_value(hand: &Vec<Card>) -> u32 {
 
 /// This method returns true whenever its argument
 /// is a hand that corresponds to a BlackJack.
-pub fn is_blackjack(hand: &Vec<Card>) -> bool {
+pub fn is_blackjack(hand: &[Card]) -> bool {
     hand.len() == 2 && hand_value(hand) == 21
 }
 

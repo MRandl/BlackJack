@@ -22,14 +22,14 @@ use crate::player::PlayerType;
 /// of non-dealer players.
 /// * `dealer_hand` The hand of the dealer.
 pub fn display_hands_and_scores(
-    scores: &Vec<(u32, Option<u32>)>,
-    player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
-    dealer_hand: &Vec<Card>,
+    scores: &[(u32, Option<u32>)],
+    player_hands: &[(Vec<Card>, Option<Vec<Card>>)],
+    dealer_hand: &[Card],
 ) {
     for (index, score) in scores.into_iter().enumerate() {
-        let player_hand: (&Vec<Card>, Option<&Vec<Card>>) = if index < player_hands.len() {
+        let player_hand: (&[Card], Option<&[Card]>) = if index < player_hands.len() {
             let tup = player_hands.get(index).unwrap();
-            (&tup.0, tup.1.as_ref())
+            (&tup.0, tup.1.as_ref().map(|x| x as &[Card]))
         } else {
             (dealer_hand, None)
         };
@@ -39,9 +39,9 @@ pub fn display_hands_and_scores(
         } else {
             vec![player_hand.0, player_hand.1.unwrap()]
         };
-        for (is_second_hand, elem) in iterate_over.iter().enumerate() {
+        for (is_second_hand, &elem) in iterate_over.iter().enumerate() {
             let mut stri = String::from("{");
-            for card in *elem {
+            for card in elem {
                 stri.push_str(&format!("/ {} /", card));
             }
             stri.push('}');
