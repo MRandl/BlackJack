@@ -45,9 +45,9 @@ fn main() {
 
         println!();
         let bj_index = compute_blackjack_index(&player_hands, &dealer_hand);
-        let (three_two_index, winner_index, equal_index, loser_index) =
+        let [three_two_index, winner_index, equal_index, loser_index] =
             compute_result(scores, bj_index);
-            
+
         update_bank(
             &three_two_index,
             &winner_index,
