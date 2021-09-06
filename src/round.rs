@@ -187,9 +187,7 @@ fn pick_action(
                         && bank[index] >= bets[index]
                     {
                         return action;
-                    } else {
-                        ()
-                    }
+                    } else {}
                 }
                 PlayerAction::Double => {
                     if bank[index] >= bets[index]
@@ -197,9 +195,7 @@ fn pick_action(
                         && {if is_second {scores[index].1.unwrap()} else {scores[index].0}} < 21
                     {
                         return action;
-                    } else {
-                        ()
-                    }
+                    } else {}
                 }
                 _ => return action,
             }
