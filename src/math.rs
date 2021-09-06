@@ -14,7 +14,7 @@ pub const NUM_PACKS: usize = 4;
 ///
 /// For example, hand_value(&vec!(Queen of Hearts, 4 of
 /// spades, Ace of Hearts)) == 15
-fn hand_value(hand: &Vec<Card>) -> u32 {
+fn hand_value(hand: &[Card]) -> u32 {
     let mut value = 0;
     let mut found_ace = false;
 
@@ -45,7 +45,7 @@ fn hand_value(hand: &Vec<Card>) -> u32 {
 
 /// This method returns true whenever its argument
 /// is a hand that corresponds to a BlackJack.
-pub fn is_blackjack(hand: &Vec<Card>) -> bool {
+pub fn is_blackjack(hand: &[Card]) -> bool {
     hand.len() == 2 && hand_value(hand) == 21
 }
 
@@ -54,7 +54,7 @@ pub fn is_blackjack(hand: &Vec<Card>) -> bool {
 ///
 /// This occurs when the player has not hit yet,
 /// and both his cards have the same rank.
-pub fn is_splittable(hand: &Vec<Card>) -> bool {
+pub fn is_splittable(hand: &[Card]) -> bool {
     hand.len() == 2 && {
         let hand_0 = hand.get(0).unwrap();
         let hand_1 = hand.get(1).unwrap();
@@ -68,8 +68,8 @@ pub fn is_splittable(hand: &Vec<Card>) -> bool {
 /// This method returns an array of scores as u32 values. The
 /// dealer score is the last.
 pub fn compute_scores(
-    player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
-    dealer_hand: &Vec<Card>,
+    player_hands: &[(Vec<Card>, Option<Vec<Card>>)],
+    dealer_hand: &[Card],
 ) -> Vec<(u32, Option<u32>)> {
     let mut scores = Vec::with_capacity(player_hands.len() + 1);
     for hand in player_hands {
@@ -93,12 +93,7 @@ pub fn compute_scores(
 pub fn compute_result(
     scores: Vec<(u32, Option<u32>)>,
     blackjacks: Vec<(bool, Option<bool>)>,
-) -> (
-    Vec<(usize, bool)>,
-    Vec<(usize, bool)>,
-    Vec<(usize, bool)>,
-    Vec<(usize, bool)>,
-) {
+) -> [Vec<(usize, bool)>; 4] {
     let mut three_two_index: Vec<(usize, bool)> = Vec::new();
     let mut winner_index: Vec<(usize, bool)> = Vec::new();
     let mut equal_index: Vec<(usize, bool)> = Vec::new();
@@ -151,15 +146,15 @@ pub fn compute_result(
         }
     }
 
-    (three_two_index, winner_index, equal_index, loser_index)
+    [three_two_index, winner_index, equal_index, loser_index]
 }
 
 /// This function returns a vector of (bool, Option<bool>)
-/// corresponding to the hand of players, and the bools are true 
+/// corresponding to the hand of players, and the bools are true
 /// if and only if the hand has a blackjack.
 pub fn compute_blackjack_index(
-    player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
-    dealer_hand: &Vec<Card>,
+    player_hands: &[(Vec<Card>, Option<Vec<Card>>)],
+    dealer_hand: &[Card],
 ) -> Vec<(bool, Option<bool>)> {
     let mut bj = Vec::with_capacity(player_hands.len() + 1);
     for hand in player_hands {
@@ -283,10 +278,10 @@ mod tests {
 
     #[test]
     fn compute_result_test() {
-        let (thre, win, equ, los) = compute_result(vec![(0, None); 5], vec![(false, None); 5]);
+        let [thre, win, equ, los] = compute_result(vec![(0, None); 5], vec![(false, None); 5]);
         assert!(thre.is_empty() && win.is_empty() && equ.len() == 4 && los.is_empty());
 
-        let (thre, win, equ, los) = compute_result(
+        let [thre, win, equ, los] = compute_result(
             vec![(10, Some(10)), (0, Some(0)), (5, None)],
             vec![(false, Some(false)), (false, Some(false)), (false, None)],
         );

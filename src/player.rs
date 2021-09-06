@@ -34,9 +34,9 @@ pub fn human_bet(index: usize, available: u32) -> u32 {
 /// This method asks a human player for the action
 /// by reading his answer from the terminal.
 pub fn human_play(
-    scores: &Vec<(u32, Option<u32>)>,
-    player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
-    dealer_hand: &Vec<Card>,
+    scores: &[(u32, Option<u32>)],
+    player_hands: &[(Vec<Card>, Option<Vec<Card>>)],
+    dealer_hand: &[Card],
     is_second: bool,
     index: usize,
 ) -> PlayerAction {
@@ -74,7 +74,7 @@ pub fn human_play(
 /// This method implements the decision algorithm used by bots to play
 /// Approximation of : <https://blog.prepscholar.com/blackjack-strategy>
 pub fn bot_play(
-    scores: &Vec<(u32, Option<u32>)>,
+    scores: &[(u32, Option<u32>)],
     is_second: bool,
     index: usize,
     double_is_legal: bool,
@@ -94,7 +94,7 @@ pub fn bot_play(
     }
 }
 
-pub fn dealer_play(scores: &Vec<(u32, Option<u32>)>, index: usize) -> PlayerAction {
+pub fn dealer_play(scores: &[(u32, Option<u32>)], index: usize) -> PlayerAction {
     if scores[index].0 < 17 {
         PlayerAction::Hit
     } else {

@@ -22,14 +22,14 @@ use crate::player::PlayerType;
 /// of non-dealer players.
 /// * `dealer_hand` The hand of the dealer.
 pub fn display_hands_and_scores(
-    scores: &Vec<(u32, Option<u32>)>,
-    player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
-    dealer_hand: &Vec<Card>,
+    scores: &[(u32, Option<u32>)],
+    player_hands: &[(Vec<Card>, Option<Vec<Card>>)],
+    dealer_hand: &[Card],
 ) {
-    for (index, score) in scores.into_iter().enumerate() {
-        let player_hand: (&Vec<Card>, Option<&Vec<Card>>) = if index < player_hands.len() {
+    for (index, score) in scores.iter().enumerate() {
+        let player_hand: (&[Card], Option<&[Card]>) = if index < player_hands.len() {
             let tup = player_hands.get(index).unwrap();
-            (&tup.0, tup.1.as_ref())
+            (&tup.0, tup.1.as_ref().map(|x| x as &[Card]))
         } else {
             (dealer_hand, None)
         };
@@ -39,9 +39,9 @@ pub fn display_hands_and_scores(
         } else {
             vec![player_hand.0, player_hand.1.unwrap()]
         };
-        for (is_second_hand, elem) in iterate_over.iter().enumerate() {
+        for (is_second_hand, &elem) in iterate_over.iter().enumerate() {
             let mut stri = String::from("{");
-            for card in *elem {
+            for card in elem {
                 stri.push_str(&format!("/ {} /", card));
             }
             stri.push('}');
@@ -83,10 +83,10 @@ pub fn display_hands_and_scores(
 /// but for hands that have less value as the
 /// hand of the dealer, instead of winning.
 pub fn display_results(
-    three_two_index: &Vec<(usize, bool)>,
-    winner_index: &Vec<(usize, bool)>,
-    equal_index: &Vec<(usize, bool)>,
-    loser_index: &Vec<(usize, bool)>,
+    three_two_index: &[(usize, bool)],
+    winner_index: &[(usize, bool)],
+    equal_index: &[(usize, bool)],
+    loser_index: &[(usize, bool)],
 ) {
     display_result_vector(&three_two_index, "blackjack winners");
     display_result_vector(&winner_index, "winners");
@@ -96,8 +96,8 @@ pub fn display_results(
 
 /// Internally used by [display_results]. Displays a
 /// vector to the user.
-fn display_result_vector(index: &Vec<(usize, bool)>, name: &str) {
-    if index.len() == 0 {
+fn display_result_vector(index: &[(usize, bool)], name: &str) {
+    if index.is_empty() {
         println!("There are no {} this turn!\n", name);
     } else {
         println!("The {} are : ", name);
@@ -131,7 +131,7 @@ fn player_name(index: usize, num_players: usize) -> String {
 
 /// This method displays the current state of
 /// the bank of the players (not including current bets) to the user.
-pub fn display_bank(bank: &Vec<u32>) {
+pub fn display_bank(bank: &[u32]) {
     let mut stri = String::from("Bank is : ");
     for elem in bank {
         stri.push_str(&format!("{}, ", elem));

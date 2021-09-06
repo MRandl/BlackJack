@@ -43,11 +43,11 @@ pub fn pick_card(pack: &mut Vec<Card>) -> Card {
 /// Adds rewards to the bank of players
 /// that blackjacked, won or reached equality, according to their bets.
 pub fn update_bank(
-    ttt: &Vec<(usize, bool)>,
-    win: &Vec<(usize, bool)>,
-    equ: &Vec<(usize, bool)>,
+    ttt: &[(usize, bool)],
+    win: &[(usize, bool)],
+    equ: &[(usize, bool)],
     bank: &mut Vec<u32>,
-    bets: &Vec<u32>,
+    bets: &[u32],
 ) {
     for &(index, _) in ttt {
         bank[index] += (5 * bets[index]) >> 1; //3 for 2 reward
@@ -61,7 +61,7 @@ pub fn update_bank(
 }
 
 /// Checks whether all players have some funds to keep playing.
-pub fn is_playable(bank: &Vec<u32>) -> bool {
+pub fn is_playable(bank: &[u32]) -> bool {
     for &b in bank {
         if b == 0 {
             return false;

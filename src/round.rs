@@ -9,7 +9,7 @@ pub fn play_round(
     player_hands: &mut Vec<(Vec<Card>, Option<Vec<Card>>)>,
     dealer_hand: &mut Vec<Card>,
     pack: &mut Vec<Card>,
-    player_types: &Vec<PlayerType>,
+    player_types: &[PlayerType],
     bets: &mut Vec<u32>,
     bank: &mut Vec<u32>,
 ) {
@@ -41,8 +41,7 @@ pub fn play_round(
             index,
             player_type,
             false,
-            bets,
-            bank,
+            (bets, bank),
         );
         //if player has split, play the split
         if index < player_hands.len() && player_hands[index].1.is_some() {
@@ -53,8 +52,7 @@ pub fn play_round(
                 index,
                 player_type,
                 true,
-                bets,
-                bank,
+                (bets, bank),
             )
         }
     }
@@ -70,9 +68,9 @@ fn play_turn(
     index: usize,
     player_type: &PlayerType,
     is_second_turn: bool,
-    bets: &mut Vec<u32>,
-    bank: &mut Vec<u32>,
+    bets_and_bank: (&mut Vec<u32>, &mut Vec<u32>),
 ) {
+    let (bets, bank) = bets_and_bank;
     let mut score = compute_scores(player_hands, dealer_hand);
     let mut action = pick_action(
         &score,
@@ -81,8 +79,7 @@ fn play_turn(
         index,
         is_second_turn,
         player_type,
-        bets,
-        bank,
+        (bets, bank),
     );
     while action != PlayerAction::Stand {
         match action {
@@ -110,8 +107,7 @@ fn play_turn(
                     index,
                     is_second_turn,
                     player_type,
-                    bets,
-                    bank,
+                    (bets, bank),
                 );
             }
             PlayerAction::Split => {
@@ -128,8 +124,7 @@ fn play_turn(
                     index,
                     false,
                     player_type,
-                    bets,
-                    bank,
+                    (bets, bank),
                 );
             }
             PlayerAction::Double => {
@@ -158,15 +153,15 @@ fn play_turn(
 ///
 /// Automatically Stands when the hand has more than 21 points.
 fn pick_action(
-    scores: &Vec<(u32, Option<u32>)>,
-    player_hands: &Vec<(Vec<Card>, Option<Vec<Card>>)>,
-    dealer_hand: &Vec<Card>,
+    scores: &[(u32, Option<u32>)],
+    player_hands: &[(Vec<Card>, Option<Vec<Card>>)],
+    dealer_hand: &[Card],
     index: usize,
     is_second: bool,
     player_type: &PlayerType,
-    bets: &mut Vec<u32>,
-    bank: &mut Vec<u32>,
+    bets_and_bank: (&mut Vec<u32>, &mut Vec<u32>),
 ) -> PlayerAction {
+    let (bets, bank) = bets_and_bank;
     if (!is_second && scores[index].0 >= 21) || (is_second && scores[index].1.unwrap() >= 21) {
         PlayerAction::Stand
     } else {
@@ -188,7 +183,6 @@ fn pick_action(
                     {
                         return action;
                     } else {
-                        ()
                     }
                 }
                 PlayerAction::Double => {
@@ -198,7 +192,6 @@ fn pick_action(
                     {
                         return action;
                     } else {
-                        ()
                     }
                 }
                 _ => return action,
